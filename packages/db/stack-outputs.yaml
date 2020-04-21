@@ -1,0 +1,3 @@
+DynamoDbUserTableName: User
+DynamoDbUserTableConsoleUrl: 'https://console.aws.amazon.com/dynamodb/home?region=us-east-1#tables:selected=myapp-db-dev-UserTable-1V2OQ5RGAWJY9'
+ServerlessDeploymentBucketName: myapp-db-dev-serverlessdeploymentbucket-1hxzlcv5yi6w4

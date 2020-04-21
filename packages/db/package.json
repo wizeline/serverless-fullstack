@@ -1,0 +1,22 @@
+{
+  "name": "myapp-db",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "",
+    "start:dev": "sls dynamodb start --stage dev",
+    "package": "serverless package && zip -r db.zip .serverless serverless.yaml package.json package-lock.json",
+    "deploy": "sls deploy",
+    "deploy-package": "serverless deploy --package .serverless"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "lodash": "^4.17.15",
+    "serverless": "^1.67.3",
+    "serverless-dynamodb-local": "^0.2.39",
+    "serverless-stack-output": "^0.2.3"
+  }
+}
