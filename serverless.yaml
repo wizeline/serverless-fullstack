@@ -1,0 +1,274 @@
+service: myapp
+provider:
+  name: aws
+  stackName: ${{self:service}}-${{self:provider.stage}}
+  runtime: nodejs12.x
+  memorySize: 128
+  timeout: 6
+  stage: ${{opt:stage, self:custom.defaultStage}}
+  profile: ${{self:custom.stages.${{self:provider.stage}}.profile}}
+  region: us-east-1
+  variableSyntax: "\\${{([ ~:a-zA-Z0-9._@\\'\",\\-\\/\\(\\)]+?)}}"
+  logs:
+    restApi:
+      format: '{ "requestId":"$context.requestId", "ip": "$context.identity.sourceIp", "caller":"$context.identity.caller", "user":"$context.identity.user", "requestTime":"$context.requestTime", "httpMethod":"$context.httpMethod", "resourcePath":"$context.resourcePath", "status":"$context.status", "protocol":"$context.protocol", "responseLength":"$context.responseLength" }'
+      level: INFO # INFO, ERROR
+  environment:
+    USER_TABLE: !Ref UserTable
+  #   IS_OFFLINE: ${{env:IS_OFFLINE}}
+
+package:
+  individually: true
+
+plugins:
+  - serverless-domain-manager
+  - serverless-prune-plugin
+  - serverless-plugin-tracing
+  - serverless-iam-roles-per-function
+  - serverless-webpack
+  - serverless-apigateway-service-proxy
+  - '@wizeline/serverless-amplify-plugin'
+  - serverless-plugin-split-stacks
+  - serverless-stack-output
+  - serverless-cloudside-plugin
+  - serverless-offline
+
+custom:
+  defaultStage: dev
+  stages:
+    dev:
+      profile: myapp_dev
+      amplify:
+        branch: dev
+      api:
+        domainEnabled: false
+    staging:
+      profile: myapp_staging
+      api:
+        domainName: staging.api.example.com
+        validationDomain: example.com
+        domainEnabled: true
+      amplify:
+        domainName: staging.example.com
+        branch: staging
+    prod:
+      profile: myapp_prod
+      api:
+        domainName: api.example.com
+        validationDomain: example.com
+        domainEnabled: true
+      amplify:
+        domainName: example.com
+        branch: master
+  customDomain:
+    domainName: ${{self:custom.stages.${{self:provider.stage}}.api.domainName, ''}}
+    certificateName: ${{self:custom.stages.${{self:provider.stage}}.api.domainName, ''}}
+    enabled: ${{self:custom.stages.${{self:provider.stage}}.api.domainEnabled, false}}
+    # createRoute53Record: ${{self:custom.stages.${{self:provider.stage}}.api.isDomainRoute53, false}}
+  serverless-offline:
+    httpPort: 4911
+    noPrependStageInUrl: true
+    useChildProcesses: true # hack to get watching working
+    useSeparateProcesses: true
+  amplify:
+    repository: https://github.com/GITHUB_USER/myapp
+    amplify: ${{self:custom.stages.${{self:provider.stage}}.amplify.branch}}
+    domainName: ${{self:custom.stages.${{self:provider.stage}}.amplify.domainName, ''}}
+    buildSpecValues:
+      artifactBaseDirectory: packages/ui/build
+      preBuildWorkingDirectory: packages/ui
+  webpack:
+    webpackConfig: ./functions.webpack.config.js
+    watch: true
+  output:
+    file: ./stack-outputs.json
+  # splitStacks:
+  #   perFunction: true
+  #   custom: ./split-stack-splitter.js
+
+functions:
+  express:
+    handler: packages/api/functions/express/lambda.handler
+    events:
+        - http: ANY /
+          cors: true
+        - http: 'ANY {proxy+}'
+          cors: true
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - "xray:PutTraceSegments"
+          - "xray:PutTelemetryRecords"
+        Resource:
+          - "*"
+      - Effect: "Allow"
+        Action:
+          - dynamodb:BatchGetItem
+          - dynamodb:BatchWriteItem
+          - dynamodb:DeleteItem
+          - dynamodb:GetItem
+          - dynamodb:PutItem
+          - dynamodb:Query
+          - dynamodb:Scan
+          - dynamodb:UpdateItem
+        Resource:
+          - !GetAtt UserTable.Arn
+  
+  cognitoAutoConfirmUser:
+    handler: packages/api/functions/cognito/auto-confirm-user.handler
+    memorySize: 128
+    runtime: nodejs12.x
+
+  cognitoPostAuthentication:
+    handler: packages/api/functions/cognito/post-authentication.handler
+    memorySize: 128
+    runtime: nodejs12.x
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - dynamodb:GetItem
+          - dynamodb:PutItem
+        Resource:
+          - !GetAtt UserTable.Arn
+    
+resources:
+  Conditions:
+    IsApiCustomDomainEnabled:
+      !Equals
+        - ${{self:custom.customDomain.enabled}}
+        - true
+  
+  Resources:
+    AcmCertificate:
+      Type: AWS::CertificateManager::Certificate
+      Condition: IsApiCustomDomainEnabled
+      Properties:
+        DomainName: ${{self:custom.customDomain.domainName}}
+        DomainValidationOptions:
+          - DomainName: ${{self:custom.customDomain.domainName}}
+            ValidationDomain: ${{self:custom.stages.${{self:provider.stage}}.api.validationDomain, ''}}
+
+    UserTable:
+        Type: AWS::DynamoDB::Table
+        Properties:
+          BillingMode: PAY_PER_REQUEST
+          PointInTimeRecoverySpecification:
+            PointInTimeRecoveryEnabled: false
+          KeySchema:
+            - KeyType: HASH
+              AttributeName: id
+          AttributeDefinitions:
+            - AttributeName: id
+              AttributeType: S
+
+    CognitoUserPool:
+      Type: AWS::Cognito::UserPool
+      Properties:
+        Policies:
+          PasswordPolicy:
+            MinimumLength: 6
+        Schema:
+          - AttributeDataType: String
+            Name: email
+            Required: true
+        AutoVerifiedAttributes:
+          - email
+        # EmailConfiguration:
+        #   EmailSendingAccount: DEVELOPER
+        #   ReplyToEmailAddress: no-reply@halfstack.software
+        #   SourceArn: arn:aws:ses:us-east-1:xxxx:identity/no-reply@halfstack.software
+        LambdaConfig:
+          PreSignUp: !GetAtt CognitoAutoConfirmUserLambdaFunction.Arn
+          PostAuthentication: !GetAtt CognitoPostAuthenticationLambdaFunction.Arn
+
+    CognitoUserPoolClient:
+      Type: AWS::Cognito::UserPoolClient
+      Properties:
+        UserPoolId: !Ref CognitoUserPool
+        ClientName: CognitoIdentityPool
+        GenerateSecret: false
+        RefreshTokenValidity: 30
+
+    CognitoIdentityPool:
+      Type: AWS::Cognito::IdentityPool
+      Properties:
+        AllowUnauthenticatedIdentities: false
+        # SupportedLoginProviders:
+        #   graph.facebook.com: 'xxxxx'
+        #   accounts.google.com: 'xxxxx-v02jjpd5r9ig0pdacbhpill2asuqtvnf.apps.googleusercontent.com'
+        #   api.twitter.com:
+        CognitoIdentityProviders:
+          - ClientId: !Ref CognitoUserPoolClient
+            ProviderName: !GetAtt CognitoUserPool.ProviderName
+
+    # Allow Cognito to invoke the cognitoAutoConfirmUser and cognitoPostAuthentication functions
+    CognitoAutoConfirmUserLambdaCognitoPermission:
+      Type: AWS::Lambda::Permission
+      Properties:
+        Action: lambda:InvokeFunction
+        FunctionName: !GetAtt CognitoAutoConfirmUserLambdaFunction.Arn
+        Principal: cognito-idp.amazonaws.com
+        SourceArn: !GetAtt CognitoUserPool.Arn
+
+    CognitoPostAuthenticationLambdaCognitoPermission:
+      Type: AWS::Lambda::Permission
+      Properties:
+        Action: lambda:InvokeFunction
+        FunctionName: !GetAtt CognitoPostAuthenticationLambdaFunction.Arn
+        Principal: cognito-idp.amazonaws.com
+        SourceArn: !GetAtt CognitoUserPool.Arn
+
+    CognitoUserRole:
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            # Allow authenticated users to assume this role
+            - Effect: Allow
+              Principal:
+                Federated: cognito-identity.amazonaws.com
+              Action: sts:AssumeRoleWithWebIdentity
+              Condition:
+                StringEquals:
+                  'cognito-identity.amazonaws.com:aud': !Ref CognitoIdentityPool
+                'ForAnyValue:StringLike':
+                  'cognito-identity.amazonaws.com:amr': authenticated
+        # Authenticated users are allowed to invoke the API
+        # TODO: Add cognito user pool authorizer to API
+        Policies:
+          - PolicyName: InvokeApi
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - execute-api:Invoke
+                  Resource: !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGatewayRestApi}/${{self:provider.stage}}/*/*'
+        Path: '/'
+
+    CognitoIdentityPoolRoles:
+      Type: AWS::Cognito::IdentityPoolRoleAttachment
+      Properties:
+        IdentityPoolId: !Ref CognitoIdentityPool
+        Roles:
+          authenticated: !GetAtt CognitoUserRole.Arn
+
+  Outputs:
+    CognitoUserPoolId:
+      Description: ID of the Cognito User Pool
+      Value: !Ref CognitoUserPool
+
+    CognitoUserPoolClientId:
+      Description: 'Client ID of the Cognito User Pool App: Identity Pool'
+      Value: !Ref CognitoUserPoolClient
+
+    CognitoIdentityPoolId:
+      Description: ID of the Cognito Identity Pool
+      Value: !Ref CognitoIdentityPool
+
+    UserTableName:
+      Value: !Ref UserTable
+
+    ApiEndpoint:
+      Value: !Sub https://${ApiGatewayRestApi}.execute-api.${AWS::Region}.amazonaws.com/${{self:provider.stage}}

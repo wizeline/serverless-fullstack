@@ -5,7 +5,9 @@
   "description": "",
   "main": "handler.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:ui": "cd packages/ui && npm start",
+    "start:api": "sls offline cloudside"
   },
   "keywords": [],
   "author": "",
@@ -17,13 +19,27 @@
     "@semantic-release/github": "^7.0.5",
     "@semantic-release/npm": "^7.0.5",
     "@semantic-release/release-notes-generator": "^9.0.1",
+    "@wizeline/serverless-amplify-plugin": "^1.2.1",
     "eslint": "^5.16.0 || ^6.1.0",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.14.3",
     "eslint-plugin-react-hooks": "^1.7.0",
-    "semantic-release": "^17.0.4"
+    "nodemon": "^2.0.3",
+    "semantic-release": "^17.0.4",
+    "serverless": "^1.67.3",
+    "serverless-apigateway-service-proxy": "^1.7.0",
+    "serverless-cloudside-plugin": "^1.0.3",
+    "serverless-domain-manager": "^3.3.2",
+    "serverless-iam-roles-per-function": "^2.0.2",
+    "serverless-offline": "^6.1.4",
+    "serverless-plugin-split-stacks": "^1.9.3",
+    "serverless-plugin-tracing": "^2.0.0",
+    "serverless-prune-plugin": "^1.4.2",
+    "serverless-stack-output": "^0.2.3",
+    "serverless-webpack": "^5.3.1",
+    "webpack": "^4.43.0"
   },
   "dependencies": {}
 }

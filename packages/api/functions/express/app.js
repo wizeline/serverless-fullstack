@@ -1,7 +1,7 @@
 import express from 'express'
 import bodyParser from 'body-parser'
 import cors from 'cors'
-import userRouter from './routes/user'
+import usersRouter from './routes/users'
 
 const IS_PRODUCTION = process.env.NODE_ENV === 'production'
 
@@ -10,9 +10,8 @@ const router = express.Router()
 // router.use(cookieParser())
 router.use(cors())
 router.use(bodyParser.json())
-
 app.use('/', router)
-app.use('/user', userRouter)
+app.use('/users', usersRouter)
 
 app.use((req, res, next) => {
   const err = new Error('Not Found')
