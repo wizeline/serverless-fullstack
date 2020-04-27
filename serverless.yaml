@@ -5,8 +5,8 @@ provider:
   runtime: nodejs12.x
   memorySize: 128
   timeout: 6
-  stage: ${{opt:stage, self:custom.defaultStage}}
-  profile: ${{self:custom.stage.profile}}
+  stage: ${{opt:stage, self:custom.defaultStage}}${{opt:gitHubRunId, ''}}
+  profile: ${{self:custom.stageConfig.profile}}
   region: us-east-1
   variableSyntax: "\\${{([ ~:a-zA-Z0-9._@\\'\",\\-\\/\\(\\)]+?)}}"
   logs:
@@ -67,15 +67,15 @@ custom:
         branch: master
       alarms:
         notificationEmail: alert@example.com
-  stage: ${{self:custom.stages.${{self:provider.stage}}}}
+  stageConfig: ${{self:custom.stages.${{opt:stage, self:custom.defaultStage}}}}
   prune:
     automatic: true
     number: 10
   customDomain:
-    domainName: ${{self:custom.stage.api.domainName, ''}}
-    certificateName: ${{self:custom.stage.api.domainName, ''}}
-    enabled: ${{self:custom.stage.api.domainEnabled, false}}
-    # createRoute53Record: ${{self:custom.stage.api.isDomainRoute53, false}}
+    domainName: ${{self:custom.stageConfig.api.domainName, ''}}
+    certificateName: ${{self:custom.stageConfig.api.domainName, ''}}
+    enabled: ${{self:custom.stageConfig.api.domainEnabled, false}}
+    # createRoute53Record: ${{self:custom.stageConfig.api.isDomainRoute53, false}}
   serverless-offline:
     httpPort: 4911
     noPrependStageInUrl: true
@@ -83,8 +83,8 @@ custom:
     useSeparateProcesses: true
   amplify:
     repository: https://github.com/wizeline/serverless-nodejs-fullstack
-    branch: ${{self:custom.stage.amplify.branch}}
-    domainName: ${{self:custom.stage.amplify.domainName, ''}}
+    branch: ${{self:custom.stageConfig.amplify.branch}}
+    domainName: ${{self:custom.stageConfig.amplify.domainName, ''}}
     buildSpecValues:
       artifactBaseDirectory: packages/ui/build
       preBuildWorkingDirectory: packages/ui
@@ -101,10 +101,10 @@ custom:
     nameTemplate: $[functionName]-$[metricName]-Alarm
     topics:
       alarm:
-        topic: ${{self:service}}-${{self:provider.stage}}-alerts-alarm
+        topic: ${{self:service}}-${{self:provider.stage}}-alarm
         notifications:
           - protocol: email
-            endpoint: ${{self:custom.stage.alarms.notificationEmail}}
+            endpoint: ${{self:custom.stageConfig.alarms.notificationEmail}}
     # TODO: Add short and long alarms for each
     alarms:
       - functionThrottles
@@ -186,7 +186,7 @@ resources:
         DomainName: ${{self:custom.customDomain.domainName}}
         DomainValidationOptions:
           - DomainName: ${{self:custom.customDomain.domainName}}
-            ValidationDomain: ${{self:custom.stage.api.validationDomain, ''}}
+            ValidationDomain: ${{self:custom.stageConfig.api.validationDomain, ''}}
 
     UserTable:
       Type: AWS::DynamoDB::Table

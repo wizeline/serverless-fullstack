@@ -8,8 +8,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:ui": "cd packages/ui && npm start",
     "start:api": "sls offline cloudside",
-    "package": "sls package",
-    "deploy": "sls deploy"
+    "package": "sls package && zip -r release.zip .serverless serverless.yaml package.json package-lock.json",
+    "deploy": "sls deploy",
+    "deploy:staging": "sls deploy"
   },
   "keywords": [],
   "author": "",

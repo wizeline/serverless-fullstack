@@ -1,13 +1,13 @@
 {
-  "CognitoIdentityPoolId": "us-east-1:75332cdd-9682-4f84-86a1-3fa3e6e1772b",
-  "CognitoUserPoolClientId": "6kca9f4b8cr876hj3ir58omtqi",
-  "CognitoUserPoolId": "us-east-1_B5Fg5HB8i",
-  "CognitoAutoConfirmUserLambdaFunctionQualifiedArn": "arn:aws:lambda:us-east-1:347971939225:function:myapp-dev-cognitoAutoConfirmUser:17",
-  "UserTableName": "myapp-dev-UserTable-62M153SR7M1Z",
-  "ApiEndpoint": "https://y39z600b6i.execute-api.us-east-1.amazonaws.com/dev",
-  "ExpressLambdaFunctionQualifiedArn": "arn:aws:lambda:us-east-1:347971939225:function:myapp-dev-express:19",
-  "CognitoPostAuthenticationLambdaFunctionQualifiedArn": "arn:aws:lambda:us-east-1:347971939225:function:myapp-dev-cognitoPostAuthentication:11",
-  "ServiceEndpoint": "https://y39z600b6i.execute-api.us-east-1.amazonaws.com/dev",
-  "MyappAmplifyDefaultDomain": "dev.d3ndte54h2kan9.amplifyapp.com",
-  "ServerlessDeploymentBucketName": "myapp-dev-serverlessdeploymentbucket-1dbbfcsiri9fp"
+  "CognitoIdentityPoolId": "us-east-1:5436e50d-ae1e-4ced-8ebb-1cc899b3050d",
+  "CognitoUserPoolClientId": "58c9b9m3u6tujqri1megl6teua",
+  "CognitoUserPoolId": "us-east-1_keHSchULN",
+  "CognitoAutoConfirmUserLambdaFunctionQualifiedArn": "arn:aws:lambda:us-east-1:347971939225:function:myapp-devasdf-cognitoAutoConfirmUser:1",
+  "UserTableName": "myapp-devasdf-UserTable-LGZDZMFF7K36",
+  "ApiEndpoint": "https://h2ktcnv4t0.execute-api.us-east-1.amazonaws.com/devasdf",
+  "ExpressLambdaFunctionQualifiedArn": "arn:aws:lambda:us-east-1:347971939225:function:myapp-devasdf-express:1",
+  "CognitoPostAuthenticationLambdaFunctionQualifiedArn": "arn:aws:lambda:us-east-1:347971939225:function:myapp-devasdf-cognitoPostAuthentication:1",
+  "ServiceEndpoint": "https://h2ktcnv4t0.execute-api.us-east-1.amazonaws.com/devasdf",
+  "MyappAmplifyDefaultDomain": "dev.d2idka96wr57gs.amplifyapp.com",
+  "ServerlessDeploymentBucketName": "myapp-devasdf-serverlessdeploymentbucket-u0agpgccjpr"
 }
