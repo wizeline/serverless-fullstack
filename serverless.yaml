@@ -6,13 +6,13 @@ provider:
   memorySize: 128
   timeout: 6
   stage: ${{opt:stage, self:custom.defaultStage}}
-  profile: ${{self:custom.stages.${{self:provider.stage}}.profile}}
+  profile: ${{self:custom.stage.profile}}
   region: us-east-1
   variableSyntax: "\\${{([ ~:a-zA-Z0-9._@\\'\",\\-\\/\\(\\)]+?)}}"
   logs:
     restApi:
       format: '{ "requestId":"$context.requestId", "ip": "$context.identity.sourceIp", "caller":"$context.identity.caller", "user":"$context.identity.user", "requestTime":"$context.requestTime", "httpMethod":"$context.httpMethod", "resourcePath":"$context.resourcePath", "status":"$context.status", "protocol":"$context.protocol", "responseLength":"$context.responseLength" }'
-      level: INFO # INFO, ERROR
+      level: INFO # TODO: add custom field for setting this; default to ERROR for prod
   environment:
     USER_TABLE: !Ref UserTable
   alerts:
@@ -42,7 +42,7 @@ plugins:
   - serverless-webpack
   - serverless-apigateway-service-proxy
   - '@wizeline/serverless-amplify-plugin'
-  - serverless-plugin-split-stacks
+  # - serverless-plugin-split-stacks
   - serverless-stack-output
   - serverless-cloudside-plugin
   - serverless-plugin-aws-alerts
@@ -75,28 +75,32 @@ custom:
       amplify:
         domainName: example.com
         branch: master
+  stage: ${{self:custom.stages.${{self:provider.stage}}}}
+  prune:
+    automatic: true
+    number: 10
   customDomain:
-    domainName: ${{self:custom.stages.${{self:provider.stage}}.api.domainName, ''}}
-    certificateName: ${{self:custom.stages.${{self:provider.stage}}.api.domainName, ''}}
-    enabled: ${{self:custom.stages.${{self:provider.stage}}.api.domainEnabled, false}}
-    # createRoute53Record: ${{self:custom.stages.${{self:provider.stage}}.api.isDomainRoute53, false}}
+    domainName: ${{self:custom.stage.api.domainName, ''}}
+    certificateName: ${{self:custom.stage.api.domainName, ''}}
+    enabled: ${{self:custom.stage.api.domainEnabled, false}}
+    # createRoute53Record: ${{self:custom.stage.api.isDomainRoute53, false}}
   serverless-offline:
     httpPort: 4911
     noPrependStageInUrl: true
     useChildProcesses: true # hack to get watching working
     useSeparateProcesses: true
   amplify:
-    repository: https://github.com/GITHUB_USER/myapp
-    amplify: ${{self:custom.stages.${{self:provider.stage}}.amplify.branch}}
-    domainName: ${{self:custom.stages.${{self:provider.stage}}.amplify.domainName, ''}}
+    repository: https://github.com/wizeline/serverless-nodejs-fullstack
+    branch: ${{self:custom.stage.amplify.branch}}
+    domainName: ${{self:custom.stage.amplify.domainName, ''}}
     buildSpecValues:
       artifactBaseDirectory: packages/ui/build
       preBuildWorkingDirectory: packages/ui
   webpack:
     webpackConfig: ./functions.webpack.config.js
-    watch: true
   output:
     file: ./stack-outputs.json
+  # TODO: Add custom splitting with ./split-stack-splitter.js
   # splitStacks:
   #   perFunction: true
   #   custom: ./split-stack-splitter.js
@@ -105,10 +109,30 @@ functions:
   express:
     handler: packages/api/functions/express/lambda.handler
     events:
-        - http: ANY /
-          cors: true
-        - http: 'ANY {proxy+}'
-          cors: true
+        - http:
+            method: ANY
+            path: /
+            cors: true
+            authorizer:
+              type: COGNITO_USER_POOLS
+              authorizerId: !Ref ApiGatewayAuthorizer
+              # NOTE: We could use the below when this is fixed https://github.com/serverless/serverless/issues/3212#issuecomment-450574093
+              # Instead of creating an Authorizer ourselves
+              # name: cognitoAuthorizer
+              # type: COGNITO_USER_POOLS
+              # arn: !GetAtt CognitoUserPool.Arn
+        - http:
+            method: ANY 
+            path: '{proxy+}'
+            cors: true
+            authorizer:
+              type: COGNITO_USER_POOLS
+              authorizerId: !Ref ApiGatewayAuthorizer
+              # NOTE: We could use the below when this is fixed https://github.com/serverless/serverless/issues/3212#issuecomment-450574093
+              # Instead of creating an Authorizer ourselves
+              # name: cognitoAuthorizer
+              # type: COGNITO_USER_POOLS
+              # arn: !GetAtt CognitoUserPool.Arn
     iamRoleStatements:
       - Effect: "Allow"
         Action:
@@ -131,13 +155,9 @@ functions:
   
   cognitoAutoConfirmUser:
     handler: packages/api/functions/cognito/auto-confirm-user.handler
-    memorySize: 128
-    runtime: nodejs12.x
 
   cognitoPostAuthentication:
     handler: packages/api/functions/cognito/post-authentication.handler
-    memorySize: 128
-    runtime: nodejs12.x
     iamRoleStatements:
       - Effect: "Allow"
         Action:
@@ -161,20 +181,20 @@ resources:
         DomainName: ${{self:custom.customDomain.domainName}}
         DomainValidationOptions:
           - DomainName: ${{self:custom.customDomain.domainName}}
-            ValidationDomain: ${{self:custom.stages.${{self:provider.stage}}.api.validationDomain, ''}}
+            ValidationDomain: ${{self:custom.stage.api.validationDomain, ''}}
 
     UserTable:
-        Type: AWS::DynamoDB::Table
-        Properties:
-          BillingMode: PAY_PER_REQUEST
-          PointInTimeRecoverySpecification:
-            PointInTimeRecoveryEnabled: false
-          KeySchema:
-            - KeyType: HASH
-              AttributeName: id
-          AttributeDefinitions:
-            - AttributeName: id
-              AttributeType: S
+      Type: AWS::DynamoDB::Table
+      Properties:
+        BillingMode: PAY_PER_REQUEST
+        PointInTimeRecoverySpecification:
+          PointInTimeRecoveryEnabled: false
+        KeySchema:
+          - KeyType: HASH
+            AttributeName: id
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
 
     CognitoUserPool:
       Type: AWS::Cognito::UserPool
@@ -250,7 +270,6 @@ resources:
                 'ForAnyValue:StringLike':
                   'cognito-identity.amazonaws.com:amr': authenticated
         # Authenticated users are allowed to invoke the API
-        # TODO: Add cognito user pool authorizer to API
         Policies:
           - PolicyName: InvokeApi
             PolicyDocument:
@@ -268,7 +287,22 @@ resources:
         IdentityPoolId: !Ref CognitoIdentityPool
         Roles:
           authenticated: !GetAtt CognitoUserRole.Arn
-
+    
+    # HACK: Due to a Serverless Framework bug, we're not able to simply specify:
+    # `authorizer.arn: !GetAtt CognitoUserPool.Arn` in the function.
+    # https://github.com/serverless/serverless/issues/3212#issuecomment-450574093
+    ApiGatewayAuthorizer:
+      DependsOn:
+        - ApiGatewayRestApi
+      Type: AWS::ApiGateway::Authorizer
+      Properties:
+        Name: whatever
+        IdentitySource: method.request.header.Authorization
+        RestApiId:
+          Ref: ApiGatewayRestApi
+        Type: COGNITO_USER_POOLS
+        ProviderARNs:
+          - !GetAtt CognitoUserPool.Arn
   Outputs:
     CognitoUserPoolId:
       Description: ID of the Cognito User Pool
