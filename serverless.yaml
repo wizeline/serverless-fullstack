@@ -15,7 +15,21 @@ provider:
       level: INFO # INFO, ERROR
   environment:
     USER_TABLE: !Ref UserTable
-  #   IS_OFFLINE: ${{env:IS_OFFLINE}}
+  alerts:
+    dashboards: true
+    nameTemplate: $[functionName]-$[metricName]-Alarm
+    topics:
+      alarm:
+        topic: ${{self:service}}-${{self:provider.stage}}-alerts-alarm
+        notifications:
+          - protocol: email
+            endpoint: alerts@example.com
+    # TODO: Add short and long alarms for each
+    alarms:
+      - functionThrottles
+      - functionErrors
+      - functionInvocations
+      - functionDuration
 
 package:
   individually: true
@@ -31,6 +45,7 @@ plugins:
   - serverless-plugin-split-stacks
   - serverless-stack-output
   - serverless-cloudside-plugin
+  - serverless-plugin-aws-alerts
   - serverless-offline
 
 custom:

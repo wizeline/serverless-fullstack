@@ -7,7 +7,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:ui": "cd packages/ui && npm start",
-    "start:api": "sls offline cloudside"
+    "start:api": "sls offline cloudside",
+    "package": "sls package",
+    "deploy": "sls deploy"
   },
   "keywords": [],
   "author": "",
@@ -34,6 +36,7 @@
     "serverless-domain-manager": "^3.3.2",
     "serverless-iam-roles-per-function": "^2.0.2",
     "serverless-offline": "^6.1.4",
+    "serverless-plugin-aws-alerts": "^1.4.0",
     "serverless-plugin-split-stacks": "^1.9.3",
     "serverless-plugin-tracing": "^2.0.0",
     "serverless-prune-plugin": "^1.4.2",
