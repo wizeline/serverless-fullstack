@@ -5,7 +5,7 @@ provider:
   runtime: nodejs12.x
   memorySize: 128
   timeout: 6
-  stage: ${{opt:stage, self:custom.defaultStage}}${{opt:gitHubRunId, ''}}
+  stage: ${{opt:stage, self:custom.defaultStage}}${{opt:gitHubPullRequestBranch, ''}}
   profile: ${{self:custom.stageConfig.profile}}
   region: us-east-1
   variableSyntax: "\\${{([ ~:a-zA-Z0-9._@\\'\",\\-\\/\\(\\)]+?)}}"
@@ -40,7 +40,8 @@ custom:
     dev:
       profile: myapp_dev
       amplify:
-        branch: dev
+        # branch: dev
+        branch: master
       api:
         domainEnabled: false
       alarms:
@@ -48,22 +49,23 @@ custom:
     staging:
       profile: myapp_staging
       api:
+        domainEnabled: false
         domainName: staging.api.example.com
         validationDomain: example.com
-        domainEnabled: true
       amplify:
-        domainName: staging.example.com
-        branch: staging
+        # domainName: staging.example.com
+        # branch: staging
+        branch: master
       alarms:
         notificationEmail: alert@example.com
     prod:
       profile: myapp_prod
       api:
+        domainEnabled: false
         domainName: api.example.com
         validationDomain: example.com
-        domainEnabled: true
       amplify:
-        domainName: example.com
+        # domainName: example.com
         branch: master
       alarms:
         notificationEmail: alert@example.com

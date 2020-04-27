@@ -11,6 +11,9 @@
   * Upon signing in, a user entry is created in the table if it doesn't yet exist and maps to the user in the Cognito User Pool.
 * Automatic semantic versioning based on git commit messages
 * Continuous Deployment with GitHub Actions
+* (WIP) PR Previews
+  * Each PR gets its own stack deployed so that reviewers can see the results for themselves, and end-to-end tests can be run.
+  * TODO: make it easy to disable this for open-source projects where you don't want to allow people to create resources in your AWS account. 🔒
 
 ## Getting started
 

@@ -52,8 +52,35 @@ jobs:
     - name: Check for vulnerable dependencies in root
       run: npm audit --audit-level high
     
-    - name: Deploy staging
-      run: npm run deploy:staging -- --gitHubRunId=${{ github.run_id }}
+    - name: Setup AWS Credentials
+      run: |
+        mkdir ~/.aws
+        echo "[myapp_staging]
+        aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}" > ~/.aws/credentials
+
+    - name: Install dependencies
+      run: |
+        npm ci
+        cd packages/ui && npm ci
+        cd ../api && npm ci
+
+    - name: Copy example.env.development to .env
+      run: cp example.env.development .env
+
+    - name: Echo github vars
+      run: |
+        echo ${{ github }}
+        echo ${{ github.event_name }}
+        echo ${{ github.head_ref }}
+
+    - name: Deploy to preview stack for PR
+      if: github.event_name == 'pull_request'
+      run: NODE_ENV=production && npm run deploy:dev -- --gitHubPullRequestBranch=${{ github.head_ref }}
+
+    - name: Deploy to staging on push/merge to master
+      if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+      run: npm run deploy:staging
     
     # TODO: Additional end-to-end tests
 

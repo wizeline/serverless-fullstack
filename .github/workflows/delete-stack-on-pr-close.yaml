@@ -1,0 +1,14 @@
+name: Delete preview stack on PR close
+
+on:
+  pull_request:
+    types:
+    - closed
+
+jobs:
+  delete-stack:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Delete PR preview stack
+      run: npm run remove-stack:dev -- --gitHubPullRequestBranch=${{ github.head_ref }}
+    

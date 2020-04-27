@@ -1,4 +1,4 @@
-name: Deploy on release published
+name: Deploy release to prod
 
 on:
   release:
@@ -8,9 +8,6 @@ on:
 jobs:
   deploy_prod:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        package: [db, api, ui]
     steps:
     - name: Download release
       uses: Legion2/download-release-action@v2.1.0
@@ -18,10 +15,10 @@ jobs:
         repository: ${{ github.repository }}
         token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
         tag: latest
-        file: ${{ matrix.package }}.zip
+        file: release.zip
 
     - name: Unzip release package
-      run: unzip ${{ matrix.package }}.zip
+      run: unzip release.zip
 
     - name: Setup AWS Credentials
       run: |
@@ -36,7 +33,8 @@ jobs:
         node-version: 12.x
 
     - name: Install package
-      run: npm i
+      # run: npm i
+      run: npm ci
     
     - name: Deploy package
-      run: npm run deploy-package
+      run: npm run deploy:prod
