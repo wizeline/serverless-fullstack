@@ -9,6 +9,8 @@
 * Node.js Express API running on Lambda
 * DynamoDB Users table
   * Upon signing in, a user entry is created in the table if it doesn't yet exist and maps to the user in the Cognito User Pool.
+* Automatic semantic versioning based on git commit messages
+* Continuous Deployment with GitHub Actions
 
 ## Getting started
 
@@ -22,7 +24,7 @@ After deploying to your developer AWS account, run `npm run start:api` and `npm 
 
 ## Deploying
 
-Run `sls deploy` to deploy to your dev account. Run `sls deploy --stage staging` or `sls deploy --stage prod` to deploy to staging and prod respectively.
+Run `npm run deploy` to deploy to your dev account. Run `npm run deploy --stage staging` or `npm run deploy --stage prod` to deploy to staging and prod respectively.
 
 We'll be adding Continuous Deployment soon.
 
@@ -30,4 +32,4 @@ We'll be adding Continuous Deployment soon.
 
 ## Remove auto-verification
 
-Inside of `serverless.yaml`, remove the `cognitoAutoConfirmUser` function, the `CognitoAutoConfirmUserLambdaCognitoPermission` resource, and the `PreSignUp: !GetAtt CognitoAutoConfirmUserLambdaFunction.Arn` line.
+Inside of `serverless.yaml`, remove the `cognitoAutoConfirmUser` function, the `CognitoAutoConfirmUserLambdaCognitoPermission` resource, and the `PreSignUp: !GetAtt CognitoAutoConfirmUserLambdaFunction.Arn` line. Remove `ConfirmSignUpRedirectToSignIn` from `packages/ui/src/AuthenticatedApp.js`

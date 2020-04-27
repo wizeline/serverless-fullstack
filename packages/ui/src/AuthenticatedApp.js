@@ -7,7 +7,6 @@ import {
   ConfirmSignIn,
   VerifyContact,
   SignUp,
-  // ConfirmSignUp,
   ForgotPassword,
   RequireNewPassword,
   Greetings
