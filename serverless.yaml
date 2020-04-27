@@ -20,6 +20,7 @@ package:
   individually: true
 
 plugins:
+  - serverless-dotenv-plugin
   - serverless-domain-manager
   - serverless-prune-plugin
   - serverless-plugin-tracing
@@ -43,7 +44,7 @@ custom:
       api:
         domainEnabled: false
       alarms:
-        notificationEmail: alert@example.com
+        notificationEmail: ${{env:ALARMS_NOTIFICATION_EMAIL}}
     staging:
       profile: myapp_staging
       api:
