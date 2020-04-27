@@ -15,21 +15,6 @@ provider:
       level: INFO # TODO: add custom field for setting this; default to ERROR for prod
   environment:
     USER_TABLE: !Ref UserTable
-  alerts:
-    dashboards: true
-    nameTemplate: $[functionName]-$[metricName]-Alarm
-    topics:
-      alarm:
-        topic: ${{self:service}}-${{self:provider.stage}}-alerts-alarm
-        notifications:
-          - protocol: email
-            endpoint: alerts@example.com
-    # TODO: Add short and long alarms for each
-    alarms:
-      - functionThrottles
-      - functionErrors
-      - functionInvocations
-      - functionDuration
 
 package:
   individually: true
@@ -57,6 +42,8 @@ custom:
         branch: dev
       api:
         domainEnabled: false
+      alarms:
+        notificationEmail: alert@example.com
     staging:
       profile: myapp_staging
       api:
@@ -66,6 +53,8 @@ custom:
       amplify:
         domainName: staging.example.com
         branch: staging
+      alarms:
+        notificationEmail: alert@example.com
     prod:
       profile: myapp_prod
       api:
@@ -75,6 +64,8 @@ custom:
       amplify:
         domainName: example.com
         branch: master
+      alarms:
+        notificationEmail: alert@example.com
   stage: ${{self:custom.stages.${{self:provider.stage}}}}
   prune:
     automatic: true
@@ -104,6 +95,21 @@ custom:
   # splitStacks:
   #   perFunction: true
   #   custom: ./split-stack-splitter.js
+  alerts:
+    dashboards: true
+    nameTemplate: $[functionName]-$[metricName]-Alarm
+    topics:
+      alarm:
+        topic: ${{self:service}}-${{self:provider.stage}}-alerts-alarm
+        notifications:
+          - protocol: email
+            endpoint: ${{self:custom.stage.alarms.notificationEmail}}
+    # TODO: Add short and long alarms for each
+    alarms:
+      - functionThrottles
+      - functionErrors
+      - functionInvocations
+      - functionDuration
 
 functions:
   express:
@@ -116,9 +122,7 @@ functions:
             authorizer:
               type: COGNITO_USER_POOLS
               authorizerId: !Ref ApiGatewayAuthorizer
-              # NOTE: We could use the below when this is fixed https://github.com/serverless/serverless/issues/3212#issuecomment-450574093
-              # Instead of creating an Authorizer ourselves
-              # name: cognitoAuthorizer
+              # name: CognitoAuthorizer
               # type: COGNITO_USER_POOLS
               # arn: !GetAtt CognitoUserPool.Arn
         - http:
@@ -128,9 +132,9 @@ functions:
             authorizer:
               type: COGNITO_USER_POOLS
               authorizerId: !Ref ApiGatewayAuthorizer
-              # NOTE: We could use the below when this is fixed https://github.com/serverless/serverless/issues/3212#issuecomment-450574093
-              # Instead of creating an Authorizer ourselves
-              # name: cognitoAuthorizer
+              # NOTE: Instead of creating an Authorizer ourselves, we could use the below when this is fixed
+              # https://github.com/serverless/serverless/issues/3212#issuecomment-450574093
+              # name: CognitoAuthorizer
               # type: COGNITO_USER_POOLS
               # arn: !GetAtt CognitoUserPool.Arn
     iamRoleStatements:
@@ -288,15 +292,15 @@ resources:
         Roles:
           authenticated: !GetAtt CognitoUserRole.Arn
     
-    # HACK: Due to a Serverless Framework bug, we're not able to simply specify:
-    # `authorizer.arn: !GetAtt CognitoUserPool.Arn` in the function.
+    # Due to a Serverless Framework bug, we need to create our own Authorizer, instead of
+    # simply specifying `authorizer.arn: !GetAtt CognitoUserPool.Arn` in the function.
     # https://github.com/serverless/serverless/issues/3212#issuecomment-450574093
     ApiGatewayAuthorizer:
       DependsOn:
         - ApiGatewayRestApi
       Type: AWS::ApiGateway::Authorizer
       Properties:
-        Name: whatever
+        Name: CognitoAuthorizer
         IdentitySource: method.request.header.Authorization
         RestApiId:
           Ref: ApiGatewayRestApi
