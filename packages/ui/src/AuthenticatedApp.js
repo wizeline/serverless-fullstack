@@ -1,5 +1,5 @@
 import React from 'react'
-import Amplify from 'aws-amplify'
+import Amplify, { Auth } from 'aws-amplify'
 import {
   withAuthenticator,
   Loading,
@@ -13,15 +13,29 @@ import {
   Greetings
 } from 'aws-amplify-react'
 import '@aws-amplify/ui/dist/style.css'
+import axios from 'axios'
 import stackOutputs from './stack-outputs.json'
 
 const {
   REACT_APP_API_SERVER = stackOutputs.ApiEndpoint
 } = process.env
 
+// Set Authorization header on all requests if user is signed in
+axios.interceptors.request.use(async function (config) {
+  try {
+    const currentUserSession = await Auth.currentSession()
+    const Authorization = currentUserSession.idToken.jwtToken
+    config.headers.Authorization = Authorization
+  } catch (e) { /* Auth.currentSession() throws if not signed in 🤷‍♂️ */ }
+
+  return config
+})
+
+axios.defaults.baseURL = REACT_APP_API_SERVER
+
 async function fetchAndSetUsers({ setUsers }) {
-  const fetchUsersResponse = await fetch(`${REACT_APP_API_SERVER}/users`)
-  const users = await fetchUsersResponse.json()
+  const fetchUsersResponse = await axios.get('/users')
+  const users = fetchUsersResponse.data
   setUsers(users)
 }
 
@@ -47,7 +61,7 @@ Amplify.configure({
   },
 })
 
-// We're auto-confirming via the Lambda Function;
+// We're auto-confirming via the Lambda Function
 // Hack to skip the ConfirmSignUp view
 function ConfirmSignUpRedirectToSignIn({ authState, onStateChange }) {
   React.useEffect(() => {
