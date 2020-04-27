@@ -1,1 +1,13 @@
-{}
+{
+  "CognitoIdentityPoolId": "us-east-1:7c7c8555-6011-401d-a17b-a958fdfb50a4",
+  "CognitoUserPoolClientId": "5rg0fo7bs3htub7p1a0qs9f5m1",
+  "CognitoUserPoolId": "us-east-1_mHgk1Fx61",
+  "CognitoAutoConfirmUserLambdaFunctionQualifiedArn": "arn:aws:lambda:us-east-1:347971939225:function:myapp-dev-cognitoAutoConfirmUser:14",
+  "UserTableName": "myapp-dev-UserTable-78HVMXYFD7V8",
+  "ApiEndpoint": "https://ui0c2gahdg.execute-api.us-east-1.amazonaws.com/dev",
+  "ExpressLambdaFunctionQualifiedArn": "arn:aws:lambda:us-east-1:347971939225:function:myapp-dev-express:15",
+  "CognitoPostAuthenticationLambdaFunctionQualifiedArn": "arn:aws:lambda:us-east-1:347971939225:function:myapp-dev-cognitoPostAuthentication:8",
+  "ServiceEndpoint": "https://ui0c2gahdg.execute-api.us-east-1.amazonaws.com/dev",
+  "MyappAmplifyDefaultDomain": "dev.d3b425eo47pmdl.amplifyapp.com",
+  "ServerlessDeploymentBucketName": "myapp-dev-serverlessdeploymentbucket-1t3nth23pmkxw"
+}
