@@ -69,7 +69,7 @@ custom:
         branch: master
       alarms:
         notificationEmail: alert@example.com
-  stageConfig: ${{self:custom.stages.${{opt:stage, self:custom.defaultStage}}}}
+  stageConfig: ${{self:custom.stages.${{self:provider.stage}}}}
   prune:
     automatic: true
     number: 10
