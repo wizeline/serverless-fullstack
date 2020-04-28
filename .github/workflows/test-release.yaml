@@ -4,6 +4,7 @@ on:
   push:
     branches: [ master ]
   pull_request:
+    types: [synchronize, opened]
 
 jobs:
   test:
@@ -76,6 +77,7 @@ jobs:
     - name: Deploy to preview stack for PR
       if: github.head_ref
       # TODO: How to also get the PR origin repo if it's coming from an external contributor
+      # See: env.GITHUB_REF, env.GITHUB_HEAD_REF, GITHUB_BASE_REF https://help.github.com/en/actions/configuring-and-managing-workflows/using-environment-variables
       run: NODE_ENV=production && npm run deploy:dev -- --gitHubPullRequestBranch=${{ github.head_ref }}
 
     - name: Setup AWS Credentials
