@@ -1,11 +1,11 @@
-service: myapp
+service: myapp${{opt:gitHubPullRequestBranch, ''}}
 provider:
   name: aws
   stackName: ${{self:service}}-${{self:provider.stage}}
   runtime: nodejs12.x
   memorySize: 128
   timeout: 6
-  stage: ${{opt:stage, self:custom.defaultStage}}${{opt:gitHubPullRequestBranch, ''}}
+  stage: ${{opt:stage, self:custom.defaultStage}}
   profile: ${{self:custom.stageConfig.profile}}
   region: us-east-1
   variableSyntax: "\\${{([ ~:a-zA-Z0-9._@\\'\",\\-\\/\\(\\)]+?)}}"

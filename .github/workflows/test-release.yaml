@@ -2,7 +2,8 @@ name: Test and release
 
 on:
   push:
-  # pull_request:
+    branches: [ master ]
+  pull_request:
 
 jobs:
   test:
@@ -51,13 +52,6 @@ jobs:
     - name: Check for vulnerable dependencies in root
       run: npm audit --audit-level high
     
-    - name: Setup AWS Credentials
-      run: |
-        mkdir ~/.aws
-        echo "[myapp_staging]
-        aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}" > ~/.aws/credentials
-
     - name: Install dependencies
       run: |
         npm ci
@@ -71,10 +65,26 @@ jobs:
       run: |
         echo ${{ github.head_ref }}
 
+    - name: Setup AWS Credentials
+      if: github.head_ref
+      run: |
+        mkdir ~/.aws
+        echo "[myapp_dev]
+        aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}" > ~/.aws/credentials
+
     - name: Deploy to preview stack for PR
       if: github.head_ref
       # TODO: How to also get the PR origin repo if it's coming from an external contributor
       run: NODE_ENV=production && npm run deploy:dev -- --gitHubPullRequestBranch=${{ github.head_ref }}
+
+    - name: Setup AWS Credentials
+      if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+      run: |
+        mkdir ~/.aws
+        echo "[myapp_staging]
+        aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}" > ~/.aws/credentials
 
     - name: Deploy to staging on push/merge to master
       if: github.event_name == 'push' && github.ref == 'refs/heads/master'

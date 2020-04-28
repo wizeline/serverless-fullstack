@@ -38,6 +38,6 @@ We'll be adding Continuous Deployment soon.
 Inside of `serverless.yaml`, remove the `cognitoAutoConfirmUser` function, the `CognitoAutoConfirmUserLambdaCognitoPermission` resource, and the `PreSignUp: !GetAtt CognitoAutoConfirmUserLambdaFunction.Arn` line. Remove `ConfirmSignUpRedirectToSignIn` from `packages/ui/src/AuthenticatedApp.js`
 
 ## TODO:
-- [] Custom domains
-- [] Deploy to Amplify
-- [] CloudFormation rollback triggers
+- [ ] Custom domains
+- [ ] Deploy to Amplify
+- [ ] CloudFormation rollback triggers
