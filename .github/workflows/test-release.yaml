@@ -2,8 +2,7 @@ name: Test and release
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
+  # pull_request:
 
 jobs:
   test:
@@ -35,7 +34,7 @@ jobs:
       working-directory: "./packages/${{ matrix.package }}"
       run: npm test
 
-  deploy-to-staging:
+  deploy-test-stack:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -70,12 +69,12 @@ jobs:
 
     - name: Echo github vars
       run: |
-        echo ${{ github }}
-        echo ${{ github.event_name }}
         echo ${{ github.head_ref }}
 
     - name: Deploy to preview stack for PR
+      description: Deploy to the dev account, but as a production build.
       if: github.event_name == 'pull_request'
+      # TODO: How to also get the PR origin repo if it's coming from an external contributor
       run: NODE_ENV=production && npm run deploy:dev -- --gitHubPullRequestBranch=${{ github.head_ref }}
 
     - name: Deploy to staging on push/merge to master
