@@ -60,8 +60,9 @@ jobs:
     - name: Copy example.env.development to .env
       run: cp example.env.development .env
 
-    - name: Setup AWS Credentials
+    - name: Deploy to sandboxed stack
       if: github.head_ref
+      id: deploy-to-sandboxed-stack
       run: |
         mkdir ~/.aws
         echo "[myapp_dev]
@@ -70,8 +71,18 @@ jobs:
         # TODO: How to also get the PR origin repo if it's coming from an external contributor
         # See: env.GITHUB_REF, env.GITHUB_HEAD_REF, GITHUB_BASE_REF https://help.github.com/en/actions/configuring-and-managing-workflows/using-environment-variables
         NODE_ENV=production && npm run deploy:dev -- --gitHubPullRequestBranch=${{ github.head_ref }}
+        echo "##[set-output name=stackOutputs;]$(cat stack-outputs.json)"
 
-    - name: Setup AWS Credentials
+      
+    - name: Comment on PR with stack info
+      uses: unsplash/comment-on-pr@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        msg: steps.build_package.outputs.stackOutputs
+        check_for_duplicate_msg: true
+
+    - name: Deploy to staging
       if: github.event_name == 'push' && github.ref == 'refs/heads/master'
       run: |
         mkdir ~/.aws

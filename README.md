@@ -38,8 +38,10 @@ We'll be adding Continuous Deployment soon.
 Inside of `serverless.yaml`, remove the `cognitoAutoConfirmUser` function, the `CognitoAutoConfirmUserLambdaCognitoPermission` resource, and the `PreSignUp: !GetAtt CognitoAutoConfirmUserLambdaFunction.Arn` line. Remove `ConfirmSignUpRedirectToSignIn` from `packages/ui/src/AuthenticatedApp.js`
 
 ## TODO:
+- [ ] Deploy to Amplify - currently, there's a CD disconnect since Amplify has its own CD pipeline that gets triggered on push. We need to disable Amplify CD and implement something similar to https://github.com/aws-amplify/amplify-cli/blob/master/packages/amplify-console-hosting/utils/amplify-console-utils.js.
+- [ ] GitHub Actions: Split PR and push to master workflows
+- [ ] Dev stack suffix from .env to allow multiple devs to use a single AWS account; update GitHub Actions workflow to also use env var
 - [ ] Custom domains
-- [ ] Deploy to Amplify
 - [ ] CloudFormation rollback triggers
 - [ ] Enable stack termination protection on prod and staging
 - [ ] GitHub bot to comment on PRs with stack outputs (API and UI endpoint)
