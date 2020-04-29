@@ -1,13 +1,14 @@
 name: Auto approve PRs from dependabot
 
 on:
-  pull_request
+  pull_request:
+    # types: [opened]
 
 jobs:
   auto-approve:
     runs-on: ubuntu-latest
+    if: github.actor == 'dependabot[bot]' || github.actor == 'dependabot-preview[bot]'
     steps:
     - uses: hmarr/auto-approve-action@v2.0.0
-      if: github.actor == 'dependabot[bot]' || github.actor == 'dependabot-preview[bot]'
       with:
         github-token: "${{ secrets.GITHUB_TOKEN }}"
