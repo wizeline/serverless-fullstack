@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/wizeline/serverless-nodejs-fullstack/compare/v1.0.0...v1.0.1) (2020-04-29)
+
+
+### Bug Fixes
+
+* add remove-stack:dev script ([#5](https://github.com/wizeline/serverless-nodejs-fullstack/issues/5)) ([6f063ab](https://github.com/wizeline/serverless-nodejs-fullstack/commit/6f063ab6afd86ec11e89b2ae7db740449c20dbcf))
+
 # 1.0.0 (2020-04-28)
 
 
