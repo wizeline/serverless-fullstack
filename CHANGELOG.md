@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/wizeline/serverless-nodejs-fullstack/compare/v1.0.3...v1.0.4) (2020-04-29)
+
+
+### Bug Fixes
+
+* package for prod ([5e4f07a](https://github.com/wizeline/serverless-nodejs-fullstack/commit/5e4f07a8fdc28b27638410d3b45b46c1ea90163e))
+
 ## [1.0.3](https://github.com/wizeline/serverless-nodejs-fullstack/compare/v1.0.2...v1.0.3) (2020-04-29)
 
 
