@@ -21,9 +21,6 @@ jobs:
       with:
         node-version: 12.x
     
-    # - name: Install root
-    #   run: npm ci
-    
     - name: Install package
       working-directory: "./packages/${{ matrix.package }}"
       run: npm ci
@@ -37,6 +34,7 @@ jobs:
       run: npm test
 
   deploy-test-stack:
+    needs: [test]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -56,15 +54,11 @@ jobs:
     - name: Install dependencies
       run: |
         npm ci
-        cd packages/ui && npm ci
-        cd ../api && npm ci
+        npm --prefix ./packages/ui install
+        npm --prefix ./packages/api install
 
     - name: Copy example.env.development to .env
       run: cp example.env.development .env
-
-    - name: Echo github vars
-      run: |
-        echo ${{ github.head_ref }}
 
     - name: Setup AWS Credentials
       if: github.head_ref
@@ -73,12 +67,9 @@ jobs:
         echo "[myapp_dev]
         aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}" > ~/.aws/credentials
-
-    - name: Deploy to preview stack for PR
-      if: github.head_ref
-      # TODO: How to also get the PR origin repo if it's coming from an external contributor
-      # See: env.GITHUB_REF, env.GITHUB_HEAD_REF, GITHUB_BASE_REF https://help.github.com/en/actions/configuring-and-managing-workflows/using-environment-variables
-      run: NODE_ENV=production && npm run deploy:dev -- --gitHubPullRequestBranch=${{ github.head_ref }}
+        # TODO: How to also get the PR origin repo if it's coming from an external contributor
+        # See: env.GITHUB_REF, env.GITHUB_HEAD_REF, GITHUB_BASE_REF https://help.github.com/en/actions/configuring-and-managing-workflows/using-environment-variables
+        NODE_ENV=production && npm run deploy:dev -- --gitHubPullRequestBranch=${{ github.head_ref }}
 
     - name: Setup AWS Credentials
       if: github.event_name == 'push' && github.ref == 'refs/heads/master'
@@ -87,11 +78,8 @@ jobs:
         echo "[myapp_staging]
         aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}" > ~/.aws/credentials
+        npm run deploy:staging
 
-    - name: Deploy to staging on push/merge to master
-      if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-      run: npm run deploy:staging
-    
     # TODO: Additional end-to-end tests
 
   release:
@@ -108,14 +96,17 @@ jobs:
         node-version: 12.x
 
     - name: Install dependencies
-      run: npm ci && cd packages/ui && npm ci && cd ../api && npm ci
+      run: |
+        npm ci
+        npm --prefix ./packages/ui install
+        npm --prefix ./packages/api install
       
     - name: Package
-      if: github.event_name == 'push' && github.ref == 'refs/heads/master'
       run: npm run package
       
     - name: Release
       run: npx semantic-release
       env:
         # NOTE: GitHub Actions won't trigger on release when using the default GITHUB_TOKEN
+        # Make sure the Personal Access Token is enabled for SSO if relevant to your organization/repo
         GITHUB_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
