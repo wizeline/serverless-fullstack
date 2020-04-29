@@ -17,7 +17,7 @@ jobs:
         tag: latest
         file: release.zip
 
-    - name: Unzip release package
+    - name: Unzip release
       run: unzip release.zip
 
     - name: Setup AWS Credentials
@@ -32,8 +32,8 @@ jobs:
       with:
         node-version: 12.x
 
-    - name: Install package
+    - name: Install
       run: npm ci
     
-    - name: Deploy package
+    - name: Deploy
       run: npm run deploy:prod

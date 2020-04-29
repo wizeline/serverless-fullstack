@@ -36,7 +36,8 @@ jobs:
     # TODO: Additional end-to-end tests
     
     - name: Package
-      run: npm run package
+      # TODO: Ideally, we'd package up the prod version, deploy that to stage, then deploy the same packge to prod
+      run: npm run package:prod
       
     - name: Release
       run: npx semantic-release

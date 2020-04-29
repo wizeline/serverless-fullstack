@@ -8,10 +8,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:ui": "cd packages/ui && npm start",
     "start:api": "sls offline cloudside",
-    "package": "sls package && zip -r release.zip .serverless serverless.yaml package.json package-lock.json",
     "remove-stack:dev": "sls remove --stage dev",
     "deploy:dev": "sls deploy --stage dev",
     "deploy:staging": "NODE_ENV=production sls deploy --stage staging",
+    "package:prod": "sls package --stage prod && zip -r release.zip .serverless serverless.yaml package.json package-lock.json",
     "deploy:prod": "NODE_ENV=production sls deploy --stage prod --package .serverless"
   },
   "keywords": [],
