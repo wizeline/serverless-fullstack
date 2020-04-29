@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/wizeline/serverless-nodejs-fullstack/compare/v1.0.1...v1.0.2) (2020-04-29)
+
+
+### Bug Fixes
+
+* replace dynamodb with dynamodb-toolbox v0.2 ([267711a](https://github.com/wizeline/serverless-nodejs-fullstack/commit/267711a5c28eb1ebb4007d6e9c3b74140cc0c20f))
+
 ## [1.0.1](https://github.com/wizeline/serverless-nodejs-fullstack/compare/v1.0.0...v1.0.1) (2020-04-29)
 
 
