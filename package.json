@@ -10,6 +10,7 @@
     "start:api": "sls offline cloudside",
     "package": "sls package && zip -r release.zip .serverless serverless.yaml package.json package-lock.json",
     "deploy": "sls deploy",
+    "remove-stack:dev": "sls remove --stage dev",
     "deploy:dev": "sls deploy --stage dev",
     "deploy:staging": "NODE_ENV=production sls deploy --stage staging",
     "deploy:prod": "NODE_ENV=production sls deploy --stage prod --package .serverless"

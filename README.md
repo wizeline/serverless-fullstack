@@ -41,3 +41,5 @@ Inside of `serverless.yaml`, remove the `cognitoAutoConfirmUser` function, the `
 - [ ] Custom domains
 - [ ] Deploy to Amplify
 - [ ] CloudFormation rollback triggers
+- [ ] Enable stack termination protection on prod and staging
+- [ ] GitHub bot to comment on PRs with stack outputs (API and UI endpoint)
