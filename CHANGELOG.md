@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/wizeline/serverless-nodejs-fullstack/compare/v1.0.2...v1.0.3) (2020-04-29)
+
+
+### Bug Fixes
+
+* fix release.config.js ([10010cd](https://github.com/wizeline/serverless-nodejs-fullstack/commit/10010cd90ceb05ca55b2294f993f1283bd680450))
+
 ## [1.0.2](https://github.com/wizeline/serverless-nodejs-fullstack/compare/v1.0.1...v1.0.2) (2020-04-29)
 
 
