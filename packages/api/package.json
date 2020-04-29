@@ -4,7 +4,6 @@
   "description": "",
   "main": "handler.js",
   "scripts": {
-    "preinstall": "npx npm-force-resolutions",
     "test": "jest",
     "start:dev": "IS_OFFLINE=true serverless offline start",
     "package": "serverless package && zip -r api.zip .serverless serverless.yaml package.json package-lock.json",
@@ -39,7 +38,6 @@
     "@dazn/lambda-powertools-middleware-correlation-ids": "^1.23.0",
     "@dazn/lambda-powertools-middleware-log-timeout": "^1.23.0",
     "@dazn/lambda-powertools-middleware-sample-logging": "^1.23.0",
-    "@hapi/joi": "^15.1.1",
     "@middy/core": "^1.0.0-beta.10",
     "@middy/sqs-partial-batch-failure": "^1.0.0-beta.10",
     "aws-sdk": "^2.656.0",
@@ -47,14 +45,11 @@
     "cors": "^2.8.5",
     "discord.js": "^12.1.1",
     "dotenv": "^8.2.0",
-    "dynamodb": "^1.2.1",
+    "dynamodb-toolbox": "github:jeremydaly/dynamodb-toolbox#v0.2",
     "express": "^4.17.1",
     "lodash": "^4.17.15",
     "node-fetch": "^2.6.0",
     "serverless-http": "^2.3.2",
     "shortid": "^2.2.15"
-  },
-  "resolutions": {
-    "bunyan": "^1.8.12"
   }
 }

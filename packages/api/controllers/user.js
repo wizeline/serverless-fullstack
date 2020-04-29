@@ -5,20 +5,16 @@ export function createUser({
   id = shortId.generate(),
   name,
 }) {
-  return User.create({
+  return User.put({
     id,
     name,
   })
 }
 
 export function getUser({ id }) {
-  return new Promise((resolve) => User.get({ id }, (error, data) => resolve(data)))
+  return User.get({ id })
 }
 
 export function scanUsers() {
-  return new Promise((resolve, reject) => User.scan().exec((error, data) => {
-    console.error(error)
-    if (error) reject(error)
-    resolve(data)
-  }))
+  return User.scan()
 }

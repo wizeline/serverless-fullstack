@@ -1,18 +1,19 @@
-import dynamo from 'dynamodb'
-import Joi from '@hapi/joi'
+import { Table, Entity } from 'dynamodb-toolbox'
+import { dynamoDbDocumentClient } from '../dynamodb-init'
 
+const UserTable = new Table({
+  name: process.env.USER_TABLE,
+  partitionKey: 'id',
+  DocumentClient: dynamoDbDocumentClient,
+})
 
-const User = dynamo.define('User', {
-  hashKey: 'id',
-
-  // add the timestamp attributes (updatedAt, createdAt)
-  timestamps: true,
-
-  schema: {
-    id: Joi.string(),
-    name: Joi.string(),
+const User = new Entity({
+  name: 'User',
+  attributes: {
+    id: { partitionKey: true },
+    name: { type: 'string' },
   },
-  tableName: process.env.USER_TABLE,
+  table: UserTable,
 })
 
 export default User
