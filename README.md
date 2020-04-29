@@ -27,7 +27,7 @@ After deploying to your developer AWS account, run `npm run start:api` and `npm 
 
 ## Deploying
 
-Run `npm run deploy` to deploy to your dev account. Run `npm run deploy --stage staging` or `npm run deploy --stage prod` to deploy to staging and prod respectively.
+Run `npm run deploy:dev` to deploy to your dev account. Run `npm run deploy:staging` or `npm run deploy:prod` to deploy to staging and prod respectively.
 
 We'll be adding Continuous Deployment soon.
 

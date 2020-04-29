@@ -1,0 +1,46 @@
+name: On push to master
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  test-deploy-to-staging-and-package:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+    
+    - name: Install package
+      run: |
+        (npm ci && npm audit --audit-level high && npm test) & \
+        (cd packages/ui && npm ci && npm audit --audit-level high && npm test) & \
+        (cd packages/api && npm ci && npm audit --audit-level high && npm test)
+
+    - name: Copy example.env.development to .env
+      run: cp example.env.development .env
+
+    - name: Deploy to staging
+      run: |
+        mkdir ~/.aws
+        echo "[myapp_staging]
+        aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}" > ~/.aws/credentials
+        npm run deploy:staging
+
+    # TODO: Additional end-to-end tests
+    
+    - name: Package
+      run: npm run package
+      
+    - name: Release
+      run: npx semantic-release
+      env:
+        # NOTE: GitHub Actions won't trigger on release when using the default GITHUB_TOKEN
+        # Make sure the Personal Access Token is enabled for SSO if relevant to your organization/repo
+        GITHUB_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}

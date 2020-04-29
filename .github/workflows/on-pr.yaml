@@ -1,0 +1,67 @@
+name: On Pull Request
+
+on:
+  pull_request:
+    types: [synchronize, opened]
+
+jobs:
+  auto-approve-dependabot:
+    if: github.actor == 'dependabot[bot]' || github.actor == 'dependabot-preview[bot]'
+    runs-on: ubuntu-latest
+    steps:
+    - uses: hmarr/auto-approve-action@v2.0.0
+      with:
+        github-token: "${{ secrets.GITHUB_TOKEN }}"
+
+  test-and-deploy-to-sandbox:
+    if: github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+    - name: lsla
+      run: ls -la && ls -la packages && ls -la packages/ui
+    - name: Install package
+      run: |
+        (npm ci && npm audit --audit-level high && npm test) & \
+        (cd packages/ui && npm ci && npm audit --audit-level high && npm test) & \
+        (cd packages/api && npm ci && npm audit --audit-level high && npm test)
+
+    - name: Copy example.env.development to .env
+      run: cp example.env.development .env
+    
+    - name: Deploy to sandboxed stack
+      id: deploy_to_sandboxed_stack
+      run: |
+        mkdir ~/.aws
+        echo "[myapp_dev]
+        aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}" > ~/.aws/credentials
+        # TODO: How to also get the PR origin repo if it's coming from an external contributor
+        # See: env.GITHUB_REF, env.GITHUB_HEAD_REF, GITHUB_BASE_REF https://help.github.com/en/actions/configuring-and-managing-workflows/using-environment-variables
+        NODE_ENV=production && npm run deploy:dev -- --gitHubPullRequestBranch=${{ github.head_ref }}
+        STACK_OUTPUTS=$(cat stack-outputs.json)
+        echo "::set-output name=stackOutputs::$(cat stack-outputs.json)"
+        echo "::set-output name=stackOutputsEnv::$STACK_OUTPUTS"
+        cat stack-outputs.json
+    
+    - name: echo output
+      run: |
+        echo $STACK_OUTPUTS
+        echo "${{toJSON(steps.deploy_to_sandboxed_stack.outputs)}}"
+        echo "${{steps.deploy_to_sandboxed_stack.outputs.stackOutputsEnv}}"
+        echo "${{steps.deploy_to_sandboxed_stack.outputs.stackOutputs}}"
+    - name: Comment on PR with stack outputs
+      uses: unsplash/comment-on-pr@v1.2.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        msg: "Stack Outputs: ${{steps.deploy_to_sandboxed_stack.outputs.stackOutputs}}"
+        check_for_duplicate_msg: true
+
+    # TODO: Additional end-to-end tests
