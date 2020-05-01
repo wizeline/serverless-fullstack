@@ -1,4 +1,4 @@
-service: myapp${{opt:gitHubPullRequestBranch, ''}}
+service: myapp${{env:SERVERLESS_SERVICE_SUFFIX}}
 provider:
   name: aws
   stackName: ${{self:service}}-${{self:provider.stage}}
@@ -35,9 +35,9 @@ plugins:
   - serverless-offline
 
 custom:
-  defaultStage: dev
+  defaultStage: development
   stages:
-    dev:
+    development:
       profile: myapp_dev
       amplify:
         # branch: dev

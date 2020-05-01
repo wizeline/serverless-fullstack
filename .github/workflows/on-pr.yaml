@@ -44,7 +44,7 @@ jobs:
         aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}" > ~/.aws/credentials
         # TODO: How to also get the PR origin repo if it's coming from an external contributor
         # See: env.GITHUB_REF, env.GITHUB_HEAD_REF, GITHUB_BASE_REF https://help.github.com/en/actions/configuring-and-managing-workflows/using-environment-variables
-        NODE_ENV=production && npm run deploy:dev -- --gitHubPullRequestBranch=${{ github.head_ref }}
+        NODE_ENV=production SERVERLESS_SERVICE_SUFFIX=${{ github.head_ref }} && npm run deploy:dev
         STACK_OUTPUTS=$(cat stack-outputs.json)
         echo "::set-output name=stackOutputs::$(cat stack-outputs.json)"
         echo "::set-output name=stackOutputsEnv::$STACK_OUTPUTS"

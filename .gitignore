@@ -3,7 +3,7 @@ dist
 .DS_Store
 stats.json
 .serverless
-.env.dev
+.env.development
 .env
 .cache
 coverage
