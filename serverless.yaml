@@ -118,28 +118,28 @@ functions:
   express:
     handler: packages/api/functions/express/lambda.handler
     events:
-        - http:
-            method: ANY
-            path: /
-            cors: true
-            authorizer:
-              type: COGNITO_USER_POOLS
-              authorizerId: !Ref ApiGatewayAuthorizer
-              # name: CognitoAuthorizer
-              # type: COGNITO_USER_POOLS
-              # arn: !GetAtt CognitoUserPool.Arn
-        - http:
-            method: ANY 
-            path: '{proxy+}'
-            cors: true
-            authorizer:
-              type: COGNITO_USER_POOLS
-              authorizerId: !Ref ApiGatewayAuthorizer
-              # NOTE: Instead of creating an Authorizer ourselves, we could use the below when this is fixed
-              # https://github.com/serverless/serverless/issues/3212#issuecomment-450574093
-              # name: CognitoAuthorizer
-              # type: COGNITO_USER_POOLS
-              # arn: !GetAtt CognitoUserPool.Arn
+      - http:
+          method: ANY
+          path: /
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: !Ref ApiGatewayAuthorizer
+            # name: CognitoAuthorizer
+            # type: COGNITO_USER_POOLS
+            # arn: !GetAtt CognitoUserPool.Arn
+      - http:
+          method: ANY
+          path: '{proxy+}'
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: !Ref ApiGatewayAuthorizer
+            # NOTE: Instead of creating an Authorizer ourselves, we could use the below when this is fixed
+            # https://github.com/serverless/serverless/issues/3212#issuecomment-450574093
+            # name: CognitoAuthorizer
+            # type: COGNITO_USER_POOLS
+            # arn: !GetAtt CognitoUserPool.Arn
     iamRoleStatements:
       - Effect: "Allow"
         Action:

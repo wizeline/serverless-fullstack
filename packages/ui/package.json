@@ -20,7 +20,7 @@
   },
   "scripts": {
     "start-cloud-api": "npm run cp-stack-outputs && react-scripts start",
-    "start": "npm run cp-stack-outputs && REACT_APP_API_SERVER=http://localhost:4911 react-scripts start",
+    "start": "npm run cp-stack-outputs && react-scripts start",
     "cp-stack-outputs": "cp ../../stack-outputs.json ./src",
     "build": "react-scripts build",
     "test": "react-scripts test",
