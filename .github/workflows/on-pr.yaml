@@ -45,23 +45,18 @@ jobs:
         # TODO: How to also get the PR origin repo if it's coming from an external contributor
         # See: env.GITHUB_REF, env.GITHUB_HEAD_REF, GITHUB_BASE_REF https://help.github.com/en/actions/configuring-and-managing-workflows/using-environment-variables
         NODE_ENV=production SERVERLESS_SERVICE_SUFFIX=${{ github.head_ref }} && npm run deploy:dev
-        STACK_OUTPUTS=$(cat stack-outputs.json)
-        echo "::set-output name=stackOutputs::$(cat stack-outputs.json)"
-        echo "::set-output name=stackOutputsEnv::$STACK_OUTPUTS"
-        cat stack-outputs.json
+        echo "::set-output name=amplifyDefaultDomain::$(grep -o 'DefaultDomain": "[^"]*' ./stack-outputs.json | grep -o '[^"]*$')"
     
     - name: echo output
       run: |
-        echo $STACK_OUTPUTS
-        echo "${{toJSON(steps.deploy_to_sandboxed_stack.outputs)}}"
-        echo "${{steps.deploy_to_sandboxed_stack.outputs.stackOutputsEnv}}"
-        echo "${{steps.deploy_to_sandboxed_stack.outputs.stackOutputs}}"
+        echo "${{steps.deploy_to_sandboxed_stack.outputs.amplifyDefaultDomain}}"
+
     - name: Comment on PR with stack outputs
       uses: unsplash/comment-on-pr@v1.2.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        msg: "Stack Outputs: ${{steps.deploy_to_sandboxed_stack.outputs.stackOutputs}}"
+        msg: "Stack Outputs: [${{steps.deploy_to_sandboxed_stack.outputs.amplifyDefaultDomain}}](${{steps.deploy_to_sandboxed_stack.outputs.amplifyDefaultDomain}})"
         check_for_duplicate_msg: true
 
     # TODO: Additional end-to-end tests

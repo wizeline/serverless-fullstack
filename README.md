@@ -21,15 +21,27 @@ Replace all instances of "myapp" with the name of your application.
 
 Add `myapp_dev` profile to `~/.aws/credentials`. Add `_staging` and `_prod` variants as necessary. It's recommended each developer to have their own account, and for staging and prod to also be deployed to separate accounts.
 
-## Developing
-
-After deploying to your developer AWS account, run `npm run start:api` and `npm run start:ui` separately. Everything except the UI and Lambda Functions use the actual Cloud resources running in your dev account.
-
 ## Deploying
 
-Run `npm run deploy:dev` to deploy to your dev account. Run `npm run deploy:staging` or `npm run deploy:prod` to deploy to staging and prod respectively.
+Make a copy of the `example.env.development` file:
+
+```shell
+cp example.env.development .env.development
+```
+
+Modify the values in your `.env.development` file.
+
+Run `npm run deploy:dev` to deploy to your dev account.
+
+To deploy to staging and production manually, you can run `npm run deploy:staging` or `npm run deploy:prod` respectively.
 
 We'll be adding Continuous Deployment soon.
+
+## Developing
+
+After deploying to your developer AWS account, run `npm run start:ui` to run your UI locally against your AWS resources in the cloud.
+
+If you want to run your API locally also, you can run `npm run start:api` and `npm run start:ui:offline` separately.
 
 ## Customization
 
@@ -45,3 +57,4 @@ Inside of `serverless.yaml`, remove the `cognitoAutoConfirmUser` function, the `
 - [ ] CloudFormation rollback triggers
 - [ ] Enable stack termination protection on prod and staging
 - [ ] GitHub bot to comment on PRs with stack outputs (API and UI endpoint)
+- [ ] Add [lumigo-cli](https://www.npmjs.com/package/lumigo-cli)

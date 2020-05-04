@@ -3,9 +3,9 @@ provider:
   name: aws
   stackName: ${{self:service}}-${{self:provider.stage}}
   runtime: nodejs12.x
-  memorySize: 128
+  memorySize: 1024
   timeout: 6
-  stage: ${{opt:stage, self:custom.defaultStage}}
+  stage: ${{opt:stage, env:NODE_ENV, 'development'}}
   profile: ${{self:custom.stageConfig.profile}}
   region: us-east-1
   variableSyntax: "\\${{([ ~:a-zA-Z0-9._@\\'\",\\-\\/\\(\\)]+?)}}"
@@ -19,6 +19,7 @@ provider:
     # Enable connection reuse for AWS SDK for instant performance boost
     # https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/node-reusing-connections.html
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
+
 package:
   individually: true
 
@@ -30,6 +31,7 @@ plugins:
   - serverless-iam-roles-per-function
   - serverless-webpack
   - serverless-apigateway-service-proxy
+  # - '../serverless-amplify-plugin'
   - '@wizeline/serverless-amplify-plugin'
   # - serverless-plugin-split-stacks
   - serverless-stack-output
@@ -38,13 +40,10 @@ plugins:
   - serverless-offline
 
 custom:
-  defaultStage: development
   stages:
     development:
       profile: myapp_dev
       amplify:
-        # branch: dev
-        branch: master
       api:
         domainEnabled: false
       alarms:
@@ -58,10 +57,9 @@ custom:
       amplify:
         # domainName: staging.example.com
         # branch: staging
-        branch: master
       alarms:
         notificationEmail: alert@example.com
-    prod:
+    production:
       profile: myapp_prod
       api:
         domainEnabled: false
@@ -69,7 +67,6 @@ custom:
         validationDomain: example.com
       amplify:
         # domainName: example.com
-        branch: master
       alarms:
         notificationEmail: alert@example.com
   stageConfig: ${{self:custom.stages.${{self:provider.stage}}}}
@@ -87,8 +84,7 @@ custom:
     useChildProcesses: true # hack to get watching working
     useSeparateProcesses: true
   amplify:
-    repository: https://github.com/wizeline/serverless-nodejs-fullstack
-    branch: ${{self:custom.stageConfig.amplify.branch}}
+    isManual: true
     domainName: ${{self:custom.stageConfig.amplify.domainName, ''}}
     buildSpecValues:
       artifactBaseDirectory: packages/ui/build

@@ -8,3 +8,4 @@ stats.json
 .cache
 coverage
 .webpack
+stack-outputs.json

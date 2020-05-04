@@ -36,4 +36,4 @@ jobs:
       run: npm ci
     
     - name: Deploy
-      run: npm run deploy:prod
+      run: npm run deploy-prepack:prod
