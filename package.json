@@ -28,7 +28,7 @@
     "@semantic-release/github": "^7.0.5",
     "@semantic-release/npm": "^7.0.5",
     "@semantic-release/release-notes-generator": "^9.0.1",
-    "@wizeline/serverless-amplify-plugin": "^1.5.0",
+    "@wizeline/serverless-amplify-plugin": "^1.5.1",
     "eslint": "^5.16.0 || ^6.1.0",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-plugin-import": "^2.18.2",

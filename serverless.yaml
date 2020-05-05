@@ -31,12 +31,13 @@ plugins:
   - serverless-iam-roles-per-function
   - serverless-webpack
   - serverless-apigateway-service-proxy
-  # - '../serverless-amplify-plugin'
-  - '@wizeline/serverless-amplify-plugin'
   # - serverless-plugin-split-stacks
   - serverless-stack-output
   - serverless-cloudside-plugin
   - serverless-plugin-aws-alerts
+  # NOTE: serverless-amplify-plugin must be after serverless-stack-output, since the UI build command relies on stack-outputs.json
+  # - '../serverless-amplify-plugin'
+  - '@wizeline/serverless-amplify-plugin'
   - serverless-offline
 
 custom:
