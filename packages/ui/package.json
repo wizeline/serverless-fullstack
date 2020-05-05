@@ -21,8 +21,8 @@
   "scripts": {
     "start-cloud-api": "npm run cp-stack-outputs && react-scripts start",
     "start": "npm run cp-stack-outputs && react-scripts start",
-    "cp-stack-outputs": "cp ../../stack-outputs.json ./src",
-    "build": "npm run cp-stack-outputs && react-scripts build",
+    "cp-stack-outputs": "echo 1 || cp ../../stack-outputs.json ./src",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "package": "serverless package && zip -r ui.zip build .serverless serverless.yaml package.json package-lock.json",

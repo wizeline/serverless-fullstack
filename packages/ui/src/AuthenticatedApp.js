@@ -13,10 +13,12 @@ import {
 } from 'aws-amplify-react'
 import '@aws-amplify/ui/dist/style.css'
 import axios from 'axios'
-import stackOutputs from './stack-outputs.json'
 
 const {
-  REACT_APP_API_SERVER = stackOutputs.ApiEndpoint
+  REACT_APP_ApiEndpoint,
+  REACT_APP_CognitoIdentityPoolId,
+  REACT_APP_CognitoUserPoolId,
+  REACT_APP_CognitoUserPoolClientId,
 } = process.env
 
 // Set Authorization header on all requests if user is signed in
@@ -30,7 +32,7 @@ axios.interceptors.request.use(async function (config) {
   return config
 })
 
-axios.defaults.baseURL = REACT_APP_API_SERVER
+axios.defaults.baseURL = REACT_APP_ApiEndpoint
 
 async function fetchAndSetUsers({ setUsers }) {
   const fetchUsersResponse = await axios.get('/users')
@@ -54,9 +56,9 @@ function AuthenticatedApp() {
 Amplify.configure({
   Auth: {
     // region: process.env.region,
-    identityPoolId: stackOutputs.CognitoIdentityPoolId,
-    userPoolId: stackOutputs.CognitoUserPoolId,
-    userPoolWebClientId: stackOutputs.CognitoUserPoolClientId,
+    identityPoolId: REACT_APP_CognitoIdentityPoolId,
+    userPoolId: REACT_APP_CognitoUserPoolId,
+    userPoolWebClientId: REACT_APP_CognitoUserPoolClientId,
   },
 })
 

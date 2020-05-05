@@ -90,9 +90,17 @@ custom:
     buildSpecValues:
       artifactBaseDirectory: packages/ui/build
       preBuildWorkingDirectory: packages/ui
+    buildCommandEnvVars:
+      prefix: 'REACT_APP_'
+      allow:
+        - ApiEndpoint
+        - CognitoIdentityPoolId,
+        - CognitoUserPoolId,
+        - CognitoUserPoolClientId,
   webpack:
     webpackConfig: ./functions.webpack.config.js
   output:
+    handler: ./serverless-stack-output-handler.js
     file: ./stack-outputs.json
   # TODO: Add custom splitting with ./split-stack-splitter.js
   # splitStacks:
