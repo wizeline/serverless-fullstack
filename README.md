@@ -29,7 +29,7 @@ Make a copy of the `example.env.development` file:
 cp example.env.development .env.development
 ```
 
-Modify the values in your `.env.development` file.
+Modify the values in your `.env.development` file. If you're using a shared developer account, you should set `SERVERLESS_SERVICE_SUFFIX=-brett`, ensuring the value you specify is unique and not used by other developers on your team.
 
 Run `npm run deploy:dev` to deploy to your dev account.
 

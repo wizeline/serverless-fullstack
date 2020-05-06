@@ -24,17 +24,13 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 12.x
-    - name: lsla
-      run: ls -la && ls -la packages && ls -la packages/ui
+
     - name: Install package
       run: |
         (npm ci && npm audit --audit-level high && npm test) & \
         (cd packages/ui && npm ci && npm audit --audit-level high && npm test) & \
         (cd packages/api && npm ci && npm audit --audit-level high && npm test)
 
-    - name: Copy example.env.development to .env
-      run: cp example.env.development .env
-    
     - name: Deploy to sandboxed stack
       id: deploy_to_sandboxed_stack
       run: |
@@ -44,7 +40,7 @@ jobs:
         aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}" > ~/.aws/credentials
         # TODO: How to also get the PR origin repo if it's coming from an external contributor
         # See: env.GITHUB_REF, env.GITHUB_HEAD_REF, GITHUB_BASE_REF https://help.github.com/en/actions/configuring-and-managing-workflows/using-environment-variables
-        NODE_ENV=production SERVERLESS_SERVICE_SUFFIX=-${{ github.head_ref }} npm run deploy:dev
+        NODE_ENV=production ALARMS_NOTIFICATION_EMAIL=alert@example.com SERVERLESS_SERVICE_SUFFIX=-${{ github.head_ref }} npm run deploy:dev
         WEBSITE_URL=https://$(grep -o 'DefaultDomain": "[^"]*' ./stack-outputs.json | grep -o '[^"]*$')
         echo "::set-output name=websiteUrl::$WEBSITE_URL"
     

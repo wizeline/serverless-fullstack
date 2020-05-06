@@ -19,9 +19,8 @@
     "typeface-roboto": "0.0.75"
   },
   "scripts": {
-    "start-cloud-api": "npm run cp-stack-outputs && react-scripts start",
-    "start": "npm run cp-stack-outputs && react-scripts start",
-    "cp-stack-outputs": "echo 1 || cp ../../stack-outputs.json ./src",
+    "start-cloud-api": "react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
