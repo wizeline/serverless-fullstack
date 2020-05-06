@@ -31,7 +31,7 @@ jobs:
         echo "[myapp_staging]
         aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}" > ~/.aws/credentials
-        npm run deploy:staging
+        NODE_ENV=production SERVERLESS_SERVICE_SUFFIX='' npm run deploy:staging
 
     # TODO: Additional end-to-end tests
     
