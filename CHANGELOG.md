@@ -1,3 +1,20 @@
+# [1.1.0](https://github.com/wizeline/serverless-fullstack/compare/v1.0.4...v1.1.0) (2020-05-06)
+
+
+### Bug Fixes
+
+* PR stack preview and commenting ([#9](https://github.com/wizeline/serverless-fullstack/issues/9)) ([b00cebe](https://github.com/wizeline/serverless-fullstack/commit/b00cebe879fd080ed2ef489e32aa97cc4f4b0aee))
+* **ui:** cp-stack-outputs before running build ([b1268f2](https://github.com/wizeline/serverless-fullstack/commit/b1268f2e43335d2caa726914c3e4969d535f4973))
+* update dynamodb-toolbox to fix invalid table error ([90bb4e5](https://github.com/wizeline/serverless-fullstack/commit/90bb4e5fd0089495fb95a8169b7b866aa0cc4fe6))
+* use SERVERLESS_SERVICE_SUFFIX instead of cli option and rename dev stage to development ([871d3bb](https://github.com/wizeline/serverless-fullstack/commit/871d3bb575370bc3dd32ec3ed4952cb03079cfcd))
+
+
+### Features
+
+* set AWS_NODEJS_CONNECTION_REUSE_ENABLED for perf boost ([6a2962e](https://github.com/wizeline/serverless-fullstack/commit/6a2962e58c63433a4b6f56bbaeaa7731e4d74ea2))
+* use Amplify manual deployments ([f0e8607](https://github.com/wizeline/serverless-fullstack/commit/f0e8607321f4bb8eda672af838c235decbab84fb))
+* use stack outputs as env vars for UI build command ([f71be15](https://github.com/wizeline/serverless-fullstack/commit/f71be1508356eab4f3acb42cbcbd4ac883c76e26))
+
 ## [1.0.4](https://github.com/wizeline/serverless-nodejs-fullstack/compare/v1.0.3...v1.0.4) (2020-04-29)
 
 
