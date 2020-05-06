@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/wizeline/serverless-fullstack/compare/v1.1.0...v1.1.1) (2020-05-06)
+
+
+### Bug Fixes
+
+* shorten cognito lambda functions and add stage-specific .env vars ([6015c68](https://github.com/wizeline/serverless-fullstack/commit/6015c6823bfa1ec33911276a560e185507f9c563))
+
 # [1.1.0](https://github.com/wizeline/serverless-fullstack/compare/v1.0.4...v1.1.0) (2020-05-06)
 
 
