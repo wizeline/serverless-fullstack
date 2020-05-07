@@ -1,3 +1,11 @@
+## [1.1.2](https://github.com/wizeline/serverless-fullstack/compare/v1.1.1...v1.1.2) (2020-05-07)
+
+
+### Bug Fixes
+
+* remove stage-specific .env vars; pass via command during CI instead ([92ed71b](https://github.com/wizeline/serverless-fullstack/commit/92ed71b116f77eb7d8dd828ca61b8c9326953fa2))
+* update to latest serverless-amplify-plugin to fix deploying prepacks ([e0b4ac6](https://github.com/wizeline/serverless-fullstack/commit/e0b4ac6037f88a69fb5fb318db18df1bf6f71736))
+
 ## [1.1.1](https://github.com/wizeline/serverless-fullstack/compare/v1.1.0...v1.1.1) (2020-05-06)
 
 
