@@ -1,3 +1,10 @@
+## [1.1.3](https://github.com/wizeline/serverless-fullstack/compare/v1.1.2...v1.1.3) (2020-05-08)
+
+
+### Bug Fixes
+
+* **ci:** add prod aws profile ([46c35af](https://github.com/wizeline/serverless-fullstack/commit/46c35affb437ca0849f643bec958f9a84ed47b4c))
+
 ## [1.1.2](https://github.com/wizeline/serverless-fullstack/compare/v1.1.1...v1.1.2) (2020-05-07)
 
 
