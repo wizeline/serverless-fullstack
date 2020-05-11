@@ -14,6 +14,12 @@
 * (WIP) PR Previews
   * Each PR gets its own stack deployed so that reviewers can see the results for themselves, and end-to-end tests can be run.
   * TODO: make it easy to disable this for open-source projects where you don't want to allow people to create resources in your AWS account. 🔒
+  
+## GitHub Actions Continuous Deployments (CI/CD)
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/wizeline/serverless-fullstack/master/serverless-fullstack-github-actions-cd.png" alt="serverless-fullstack github actions continous deployment flow diagram">
+</p>
 
 ## Getting started
 
@@ -47,11 +53,17 @@ If you want to run your API locally also, you can run `npm run start:api` and `n
 
 ## Remove auto-verification
 
-Inside of `serverless.yaml`, remove the `cognitoAutoConfirmUser` function, the `CognitoAutoConfirmUserLambdaCognitoPermission` resource, and the `PreSignUp: !GetAtt CognitoAutoConfirmUserLambdaFunction.Arn` line. Remove `ConfirmSignUpRedirectToSignIn` from `packages/ui/src/AuthenticatedApp.js`
+This kit comes with auto-verification of new users by default to reduce onboarding friction. That is, users aren't required to verify their email address. If you want to remove this and require users to verify their accounts, perform the following:
+
+1. Inside of `serverless.yaml`, remove the `cognitoAutoConfirmUser` function, the `CognitoAutoConfirmUserLambdaCognitoPermission` resource, and the `PreSignUp: !GetAtt CognitoAutoConfirmUserLambdaFunction.Arn` line.
+2. Remove the `ConfirmSignUpRedirectToSignIn`function from `packages/ui/src/AuthenticatedApp.js`, and replace `<ConfirmSignUpRedirectToSignIn override="ConfirmSignUp" />,` with `<ConfirmSignup />`.
+3. Delete `packages/api/functions/auto-confirm-user.js`
 
 ## TODO:
 - [ ] Improve setup experience (primarily, replace myapp with custom name)
 - [ ] Custom domains
 - [ ] CloudFormation rollback triggers
 - [ ] Enable stack termination protection on prod and staging
-- [ ] Add [lumigo-cli](https://www.npmjs.com/package/lumigo-cli)
+- [ ] Add [lumigo-cli](https://www.npmjs.com/package/lumigo-cli), especially for tuning
+- [ ] Split stacks to mitigate chance of hitting CloudFormation 200 resource limit
+- [ ] Split secrets.AWS_ACCESS_KEY_ID and secrets.AWS_SECRET_ACCESS_KEY in GitHub Action Workflows into _DEV, _STAGING, and _PROD.
