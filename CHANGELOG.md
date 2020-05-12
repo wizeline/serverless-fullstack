@@ -1,3 +1,10 @@
+## [1.1.4](https://github.com/wizeline/serverless-fullstack/compare/v1.1.3...v1.1.4) (2020-05-12)
+
+
+### Bug Fixes
+
+* split GitHub Action Secrets for AWS Creds into DEV, STAGING, and PROD ([cd0482b](https://github.com/wizeline/serverless-fullstack/commit/cd0482b54fbcb554774529f0280c66079f212d87))
+
 ## [1.1.3](https://github.com/wizeline/serverless-fullstack/compare/v1.1.2...v1.1.3) (2020-05-08)
 
 
