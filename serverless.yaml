@@ -30,7 +30,7 @@ plugins:
   - serverless-plugin-tracing
   - serverless-iam-roles-per-function
   - serverless-webpack
-  - serverless-apigateway-service-proxy
+  # - serverless-apigateway-service-proxy
   # - serverless-plugin-split-stacks
   - serverless-stack-output
   - serverless-cloudside-plugin
