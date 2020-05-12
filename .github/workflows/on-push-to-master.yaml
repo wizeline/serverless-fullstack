@@ -26,8 +26,8 @@ jobs:
       run: |
         mkdir ~/.aws
         echo "[myapp_staging]
-        aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}" > ~/.aws/credentials
+        aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+        aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}" > ~/.aws/credentials
         NODE_ENV=production npm run deploy:staging
 
     # TODO: Additional end-to-end tests
@@ -41,8 +41,8 @@ jobs:
         echo "
         
         [myapp_prod]
-        aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}" > ~/.aws/credentials
+        aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID_PROD }}
+        aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY_PROD }}" > ~/.aws/credentials
         npm run package:prod
         npm run zip-release
       

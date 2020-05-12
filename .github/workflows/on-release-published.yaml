@@ -24,8 +24,8 @@ jobs:
       run: |
         mkdir ~/.aws
         echo "[myapp_prod]
-        aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}" > ~/.aws/credentials
+        aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID_PROD }}
+        aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY_PROD }}" > ~/.aws/credentials
     
     - name: Setup Node.js
       uses: actions/setup-node@v1

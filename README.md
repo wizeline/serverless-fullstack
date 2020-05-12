@@ -17,7 +17,22 @@ Get started developing applications quickly with best practices using Serverless
 
 Clone the repository `git clone https://github.com/wizeline/serverless-fullstack` and replace all instances of "myapp" with the name of your application.
 
-Add `myapp_dev`, `myapp_staging`, and `myapp_prod` profiles to `~/.aws/credentials` (replacing `myapp` with the name of your application). It's recommended that each developer has their own account, and for staging and prod profiles to exist in separate accounts.
+Create AWS Credentials for your developer account and add `myapp_dev` profile to `~/.aws/credentials` (replacing `myapp` with the name of your application). It's recommended that each developer has their own account, and for staging and prod profiles to exist in separate accounts.
+
+If you want to be able to deploy to staging and production manually, you'll need to add `_staging` and `_production` profiles also.
+
+Add your AWS credentials as secrets to your GitHub Repository with the following keys:
+
+* `AWS_ACCESS_KEY_ID_DEV`
+* `AWS_SECRET_ACCESS_KEY_DEV`
+* `AWS_ACCESS_KEY_ID_STAGING`
+* `AWS_SECRET_ACCESS_KEY_STAGING`
+* `AWS_ACCESS_KEY_ID_PROD`
+* `AWS_SECRET_ACCESS_KEY_PROD`
+
+It's advised that development, staging, and production environments exist in separate AWS accounts. However, if you'd prefer to deploy to a single AWS Account for simplicity, you can simply specify the same credentials for each.
+
+Create a GitHub Personal Access Token and add it as a repository secret called `GH_PERSONAL_ACCESS_TOKEN`. This is used to create GitHub releases.
 
 Coming soon: setup script to automate this.
 
@@ -110,7 +125,6 @@ By default, Cognito forces users to verify their email address, but this kit com
 - [ ] Enable stack termination protection on prod and staging
 - [ ] Add [lumigo-cli](https://www.npmjs.com/package/lumigo-cli), especially for tuning
 - [ ] Split stacks to mitigate chance of hitting CloudFormation 200 resource limit
-- [ ] Split secrets.AWS_ACCESS_KEY_ID and secrets.AWS_SECRET_ACCESS_KEY in GitHub Action Workflows into _DEV, _STAGING, and _PROD.
 - [ ] Additional unit/integration tests
 - [ ] End-to-end tests (with Cypress?)
 - [ ] Make it easy to disable this for open-source projects where you don't want to allow people to create resources in your AWS account. 🔒
