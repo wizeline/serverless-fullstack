@@ -6,6 +6,12 @@
 
 Get started developing applications quickly with best practices using Serverless on AWS.
 
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/wizeline/serverless-fullstack/master/software-architecture-diagram.png" alt="serverless software architecture diagram">
+</p>
+
+
 ## Pre-requisites
 
 * [AWS CLI](https://docs.aws.amazon.com/polly/latest/dg/setup-aws-cli.html)
@@ -127,4 +133,4 @@ By default, Cognito forces users to verify their email address, but this kit com
 - [ ] Split stacks to mitigate chance of hitting CloudFormation 200 resource limit
 - [ ] Additional unit/integration tests
 - [ ] End-to-end tests (with Cypress?)
-- [ ] Make it easy to disable this for open-source projects where you don't want to allow people to create resources in your AWS account. 🔒
+- [ ] Make it easy to disable PR Previews for open-source projects where you don't want to allow people to create resources in your AWS account. 🔒
