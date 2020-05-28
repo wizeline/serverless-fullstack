@@ -6,11 +6,9 @@
 
 Get started developing applications quickly with best practices using Serverless on AWS.
 
-
 <p align="center">
-  <img src="https://raw.githubusercontent.com/wizeline/serverless-fullstack/master/software-architecture-diagram.png" alt="serverless software architecture diagram">
+  <img src="https://raw.githubusercontent.com/wizeline/serverless-fullstack/master/diagram/software-architecture-diagram.png" alt="serverless software architecture diagram">
 </p>
-
 
 ## Pre-requisites
 
@@ -46,11 +44,15 @@ Coming soon: setup script to automate this.
 
 ### UI
 
+<img src="https://raw.githubusercontent.com/wizeline/serverless-fullstack/master/diagram/static-website-hosting.png" alt="User Interface">
+
 The UI was bootstrapped with Create React App and modified to include an Auth flow using AWS Amplify and Cognito.
 
 Static website hosting is provided by AWS Ampify, backed by S3 and CloudFront.
 
 ### Auth
+
+<img src="https://raw.githubusercontent.com/wizeline/serverless-fullstack/master/diagram/users-auth.png" alt="Auth">
 
 User authentication is provided by AWS Cognito.
 
@@ -58,9 +60,15 @@ Social sign-in coming soon.
 
 ### REST API
 
+<img src="https://raw.githubusercontent.com/wizeline/serverless-fullstack/master/diagram/api.png" alt="API">
+
+<img src="https://raw.githubusercontent.com/wizeline/serverless-fullstack/master/diagram/business-logic.png" alt="API">
+
 A Node.js Express API running on Lambda and API Gateway allows for a familiar developer experience while leveraging the benefits of Serverless.
 
 ### Database
+
+<img src="https://raw.githubusercontent.com/wizeline/serverless-fullstack/master/diagram/data.png" alt="Data">
 
 DynamoDB is capable of scaling to meet any requirements you may have.
 
