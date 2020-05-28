@@ -74,6 +74,8 @@ DynamoDB is capable of scaling to meet any requirements you may have.
 
 ### Continuous Deployment (CI/CD)
 
+<img src="https://raw.githubusercontent.com/wizeline/serverless-fullstack/master/diagram/ci-cd/diagram.png" alt="Continuous Deployment">
+
 GitHub Actions is used to create a Continuous Deployment Pipeline from developer preview, to staging, to production. Each environment is deployed to an isolated AWS Account (optionally, these can be deployed to the same account for simplicity).
 
 Changes are automatically versioned with Semantic Versioning based on git commit messages and immutable release packages created as GitHub relesaes.
