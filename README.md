@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/wizeline/serverless-fullstack/master/docs/diagrams/software-architecture-diagram.png" alt="serverless software architecture diagram">
+  <img src="https://raw.githubusercontent.com/wizeline/serverless-fullstack/master/docs/diagrams/cloud-architecture/software-architecture-diagram.png" alt="serverless software architecture diagram">
 </p>
 
 Get started developing applications quickly with best practices using Serverless on AWS.
@@ -44,7 +44,7 @@ Coming soon: setup script to automate this.
 
 ### UI
 
-<img src="https://raw.githubusercontent.com/wizeline/serverless-fullstack/master/docs/diagrams/static-website-hosting.png" alt="User Interface">
+<img src="https://raw.githubusercontent.com/wizeline/serverless-fullstack/master/docs/diagrams/cloud-architecture/static-website-hosting.png" alt="User Interface">
 
 The UI was bootstrapped with Create React App and modified to include an Auth flow using AWS Amplify and Cognito.
 
@@ -52,7 +52,7 @@ Static website hosting is provided by AWS Ampify, backed by S3 and CloudFront.
 
 ### Auth
 
-<img src="https://raw.githubusercontent.com/wizeline/serverless-fullstack/master/docs/diagrams/users-auth.png" alt="Auth">
+<img src="https://raw.githubusercontent.com/wizeline/serverless-fullstack/master/docs/diagrams/cloud-architecture/users-auth.png" alt="Auth">
 
 User authentication is provided by AWS Cognito.
 
@@ -60,13 +60,13 @@ Social sign-in coming soon.
 
 ### REST API
 
-<img src="https://raw.githubusercontent.com/wizeline/serverless-fullstack/master/docs/diagrams/rest-api.png" alt="API">
+<img src="https://raw.githubusercontent.com/wizeline/serverless-fullstack/master/docs/diagrams/cloud-architecture/rest-api.png" alt="API">
 
 A Node.js Express API running on Lambda and API Gateway allows for a familiar developer experience while leveraging the benefits of Serverless.
 
 ### Database
 
-<img src="https://raw.githubusercontent.com/wizeline/serverless-fullstack/master/docs/diagrams/data.png" alt="Data">
+<img src="https://raw.githubusercontent.com/wizeline/serverless-fullstack/master/docs/diagrams/cloud-architecture/data.png" alt="Data">
 
 DynamoDB is capable of scaling to meet any requirements you may have.
 
