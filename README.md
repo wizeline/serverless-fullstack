@@ -99,7 +99,7 @@ Serverless Framework is used to describe our infrastruture
 ## GitHub Actions Continuous Deployments (CI/CD)
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/wizeline/serverless-fullstack/master/serverless-fullstack-github-actions-cd.png" alt="serverless-fullstack github actions continous deployment flow diagram">
+  <img src="https://raw.githubusercontent.com/wizeline/serverless-fullstack/master/docs/diagrams/ci-cd/serverless-fullstack-github-actions-cd.png" alt="serverless-fullstack github actions continous deployment flow diagram">
 </p>
 
 ## Manual/developer deployments
