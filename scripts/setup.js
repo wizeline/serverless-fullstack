@@ -19,8 +19,8 @@ const getUndescoredString = (string) => string.split(' ').join('_')
 const getLowerCaseString = (string) => string.toLowerCase()
 const getApplicationName = (string) => getUndescoredString(getLowerCaseString(string))
 
-const replaceFlag = () => {
-  const changeShortName = replace.sync({
+const replaceShortFlags = () => {
+  return replace.sync({
     files: [
       packageJson,
       `${UIPath}${packageJson}`,
@@ -31,7 +31,10 @@ const replaceFlag = () => {
     from: flags,
     to: getApplicationName(shortName),
   })
-  const changeAppName = replace.sync({
+}
+
+const replaceLongFlags = () => {
+  return replace.sync({
     files: [
       `${UIPath}${manifest}`,
       `${UIPath}${index}`,
@@ -39,14 +42,22 @@ const replaceFlag = () => {
     from: longNameFlags,
     to: appName,
   })
-  console.log(changeShortName, changeAppName)
+}
+
+const replaceFlag = () => {
+  const changeShortName = replaceShortFlags()
+  const changeAppName = replaceLongFlags()
+
   const filesChanged = [...changeShortName, ...changeAppName.filter((change) => {
     const shortNameFile = changeShortName.find((ch) => ch.file === change.file)
-    if (shortNameFile) return change.hasChanged !== shortNameFile.hasChanged && change.hasChanged === true
+    /* conditional to get unique files */
+    if (shortNameFile) {
+      return change.hasChanged !== shortNameFile.hasChanged && change.hasChanged
+    }
 
     return change
   })]
-  console.log(filesChanged)
+
   return filesChanged.filter((r) => r.hasChanged).length
 }
 
