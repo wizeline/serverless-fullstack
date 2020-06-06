@@ -40,12 +40,12 @@ const replaceFlag = () => {
     to: appName,
   })
   console.log(changeShortName, changeAppName)
-  const filesChanged = changeShortName.join(changeAppName.filter((change) => {
+  const filesChanged = [...changeShortName, ...changeAppName.filter((change) => {
     const shortNameFile = changeShortName.find((ch) => ch.file === change.file)
     if (shortNameFile) return change.hasChanged !== shortNameFile.hasChanged && change.hasChanged === true
 
     return change
-  }))
+  })]
   console.log(filesChanged)
   return filesChanged.filter((r) => r.hasChanged).length
 }
