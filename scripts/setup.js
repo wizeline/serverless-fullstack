@@ -1,7 +1,7 @@
 const replace = require('replace-in-file')
 
-const flag = 'myapp'
-const longNameFlag = 'My App'
+const flags = ['myapp', 'MyApp']
+const longNameFlags = ['My App']
 
 /* DIR PATHS */
 const UIPath = 'packages/ui/'
@@ -28,7 +28,7 @@ const replaceFlag = () => {
       `${UIPath}${manifest}`,
       yamlFile,
     ],
-    from: flag,
+    from: flags,
     to: getApplicationName(shortName),
   })
   const changeAppName = replace.sync({
@@ -36,7 +36,7 @@ const replaceFlag = () => {
       `${UIPath}${manifest}`,
       `${UIPath}${index}`,
     ],
-    from: longNameFlag,
+    from: longNameFlags,
     to: appName,
   })
   console.log(changeShortName, changeAppName)
