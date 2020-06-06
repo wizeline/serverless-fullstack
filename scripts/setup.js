@@ -1,7 +1,7 @@
 const replace = require('replace-in-file')
 
-const flags = ['myapp', 'MyApp']
-const longNameFlags = ['My App']
+const flags = [/myapp/g, /MyApp/g]
+const longNameFlags = [/My App/g]
 
 /* DIR PATHS */
 const UIPath = 'packages/ui/'
@@ -19,30 +19,26 @@ const getUndescoredString = (string) => string.split(' ').join('_')
 const getLowerCaseString = (string) => string.toLowerCase()
 const getApplicationName = (string) => getUndescoredString(getLowerCaseString(string))
 
-const replaceShortFlags = () => {
-  return replace.sync({
-    files: [
-      packageJson,
-      `${UIPath}${packageJson}`,
-      `${APIPath}${packageJson}`,
-      `${UIPath}${manifest}`,
-      yamlFile,
-    ],
-    from: flags,
-    to: getApplicationName(shortName),
-  })
-}
+const replaceShortFlags = () => replace.sync({
+  files: [
+    packageJson,
+    `${UIPath}${packageJson}`,
+    `${APIPath}${packageJson}`,
+    `${UIPath}${manifest}`,
+    yamlFile,
+  ],
+  from: flags,
+  to: getApplicationName(shortName),
+})
 
-const replaceLongFlags = () => {
-  return replace.sync({
-    files: [
-      `${UIPath}${manifest}`,
-      `${UIPath}${index}`,
-    ],
-    from: longNameFlags,
-    to: appName,
-  })
-}
+const replaceLongFlags = () => replace.sync({
+  files: [
+    `${UIPath}${manifest}`,
+    `${UIPath}${index}`,
+  ],
+  from: longNameFlags,
+  to: appName,
+})
 
 const replaceFlag = () => {
   const changeShortName = replaceShortFlags()
@@ -66,7 +62,7 @@ const main = () => {
   shortName = process.env.npm_config_shortName || getUndescoredString(appName)
 
   const replacedFiles = replaceFlag()
-  console.log(`${replacedFiles} files changed!`)
+  console.info(`${replacedFiles} files changed!`)
 }
 
 main()
