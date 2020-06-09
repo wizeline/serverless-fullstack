@@ -2,11 +2,11 @@ name: Delete preview stack on PR close
 
 on:
   pull_request:
-    types:
-    - closed
+    types: [closed]
 
 jobs:
   delete-stack:
+    # if: github.event.action == 'closed'
     runs-on: ubuntu-latest
     steps:
     - name: Checkout

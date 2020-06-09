@@ -166,10 +166,10 @@ functions:
         Resource:
           - !GetAtt UserTable.Arn
 
-  cognitoAutoConfirm:
+  autoConfirmUser:
     handler: packages/api/functions/cognito/auto-confirm-user.handler
 
-  cognitoPostAuthN:
+  postAuthN:
     handler: packages/api/functions/cognito/post-authentication.handler
     iamRoleStatements:
       - Effect: "Allow"
@@ -226,8 +226,8 @@ resources:
         #   ReplyToEmailAddress: no-reply@halfstack.software
         #   SourceArn: arn:aws:ses:us-east-1:xxxx:identity/no-reply@halfstack.software
         LambdaConfig:
-          PreSignUp: !GetAtt CognitoAutoConfirmLambdaFunction.Arn
-          PostAuthentication: !GetAtt CognitoPostAuthNLambdaFunction.Arn
+          PreSignUp: !GetAtt AutoConfirmUserLambdaFunction.Arn
+          PostAuthentication: !GetAtt PostAuthNLambdaFunction.Arn
 
     CognitoUserPoolClient:
       Type: AWS::Cognito::UserPoolClient
@@ -250,19 +250,19 @@ resources:
             ProviderName: !GetAtt CognitoUserPool.ProviderName
 
     # Allow Cognito to invoke the cognitoAutoConfirm and cognitoPostAuthN functions
-    CognitoAutoConfirmLambdaCognitoPermission:
+    AutoConfirmUserLambdaCognitoPermission:
       Type: AWS::Lambda::Permission
       Properties:
         Action: lambda:InvokeFunction
-        FunctionName: !GetAtt CognitoAutoConfirmLambdaFunction.Arn
+        FunctionName: !GetAtt AutoConfirmUserLambdaFunction.Arn
         Principal: cognito-idp.amazonaws.com
         SourceArn: !GetAtt CognitoUserPool.Arn
 
-    CognitoPostAuthNLambdaCognitoPermission:
+    PostAuthNLambdaCognitoPermission:
       Type: AWS::Lambda::Permission
       Properties:
         Action: lambda:InvokeFunction
-        FunctionName: !GetAtt CognitoPostAuthNLambdaFunction.Arn
+        FunctionName: !GetAtt PostAuthNLambdaFunction.Arn
         Principal: cognito-idp.amazonaws.com
         SourceArn: !GetAtt CognitoUserPool.Arn
 
