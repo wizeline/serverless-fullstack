@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/wizeline/serverless-fullstack/compare/v1.1.4...v1.2.0) (2020-06-09)
+
+
+### Features
+
+* add setup script ([#17](https://github.com/wizeline/serverless-fullstack/issues/17)) ([094edd2](https://github.com/wizeline/serverless-fullstack/commit/094edd2e2223546529a56c2facc1deea87bc5169))
+
 ## [1.1.4](https://github.com/wizeline/serverless-fullstack/compare/v1.1.3...v1.1.4) (2020-05-12)
 
 
