@@ -171,7 +171,6 @@ functions:
 
   cognitoPostAuthN:
     handler: packages/api/functions/cognito/post-authentication.handler
-    iamRoleStatementsName: serverless-cognito-post-auth
     iamRoleStatements:
       - Effect: "Allow"
         Action:

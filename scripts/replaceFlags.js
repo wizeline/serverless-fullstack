@@ -3,7 +3,7 @@ const constants = require('./constants')
 
 const getUndescoredString = (string) => string.split(' ').join('_')
 const getLowerCaseString = (string) => string.toLowerCase()
-const getApplicationName = (string) => getUndescoredString(getLowerCaseString(string))
+const getLowerCasedUnderscoredString = (string) => getUndescoredString(getLowerCaseString(string))
 
 const replaceShortFlags = (shortName) => replace.sync({
   files: [
@@ -14,7 +14,7 @@ const replaceShortFlags = (shortName) => replace.sync({
     constants.yamlFile,
   ],
   from: constants.flags,
-  to: getApplicationName(shortName),
+  to: getLowerCasedUnderscoredString(shortName),
 })
 
 const replaceLongFlags = (appName) => replace.sync({
