@@ -165,7 +165,7 @@ functions:
           - dynamodb:UpdateItem
         Resource:
           - !GetAtt UserTable.Arn
-  
+
   cognitoAutoConfirm:
     handler: packages/api/functions/cognito/auto-confirm-user.handler
 
