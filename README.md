@@ -19,7 +19,11 @@ Get started developing applications quickly with best practices using Serverless
 
 ## Getting started
 
-Clone the repository `git clone https://github.com/wizeline/serverless-fullstack` and replace all instances of "myapp" with the name of your application.
+Clone the repository `git clone https://github.com/wizeline/serverless-fullstack` and setup the project with the command:
+
+`npm setup --appName="My application name" --shortName=myapp`
+
+Replace "My application name" with the full name of your application and "myapp" with the short name of your application. The short name is an optional param and it will be used (if it's provided) to build the AWS stack. If the short name isn't provided, then the appName will be used instead.
 
 Create AWS Credentials for your developer account and add `myapp_dev` profile to `~/.aws/credentials` (replacing `myapp` with the name of your application). It's recommended that each developer has their own account, and for staging and prod profiles to exist in separate accounts.
 
