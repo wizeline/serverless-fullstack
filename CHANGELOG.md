@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/wizeline/serverless-fullstack/compare/v1.2.0...v1.2.1) (2020-06-10)
+
+
+### Bug Fixes
+
+* shorten Lambda Fn names to mitigate hitting length limit ([#19](https://github.com/wizeline/serverless-fullstack/issues/19)) ([fea1357](https://github.com/wizeline/serverless-fullstack/commit/fea1357e933c429c96bc6e1364da37cfac95811b))
+
 # [1.2.0](https://github.com/wizeline/serverless-fullstack/compare/v1.1.4...v1.2.0) (2020-06-09)
 
 
