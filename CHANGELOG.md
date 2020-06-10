@@ -1,3 +1,10 @@
+## [1.2.2](https://github.com/wizeline/serverless-fullstack/compare/v1.2.1...v1.2.2) (2020-06-10)
+
+
+### Bug Fixes
+
+* **dependencies:** update dependencies ([08dd83c](https://github.com/wizeline/serverless-fullstack/commit/08dd83c9d92ed092fe2ce71615bcaf585f5a0694))
+
 ## [1.2.1](https://github.com/wizeline/serverless-fullstack/compare/v1.2.0...v1.2.1) (2020-06-10)
 
 
