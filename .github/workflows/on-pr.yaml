@@ -2,7 +2,7 @@ name: On Pull Request
 
 on:
   pull_request:
-    types: [synchronize, opened]
+    types: [synchronize, opened, reopened]
 
 jobs:
   auto-approve-dependabot:

@@ -2,8 +2,7 @@ name: Delete preview stack on PR close
 
 on:
   pull_request:
-    types:
-    - closed
+    types: [closed]
 
 jobs:
   delete-stack:
