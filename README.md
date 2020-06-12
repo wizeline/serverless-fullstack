@@ -18,8 +18,15 @@ Get started developing applications quickly with best practices using Serverless
 * GitHub Account
 
 ## Getting started
+To get started, run the following commands:
 
-Clone the repository `git clone https://github.com/wizeline/serverless-fullstack` and replace all instances of "myapp" with the name of your application.
+`git clone https://github.com/wizeline/serverless-fullstack`
+`cd serverless-fullstack`
+`npm i`
+`npm setup --appName="Awesome App" --shortName=awesomeapp`
+# TODO: We need to update setup script to add credentials/profiles to the aws credentials file for each stage (if they only provide dev creds, we'll create the staging and prod profiles using the dev creds) npm run deploy
+
+Replace "Awesome App" with the full name of your application. Optionally, provide a shortName that will be used for the AWS CloudFormation Stack name. If shortName isn't provided, it will be constructed based on applicationName.
 
 Create AWS Credentials for your developer account and add `myapp_dev` profile to `~/.aws/credentials` (replacing `myapp` with the name of your application). It's recommended that each developer has their own account, and for staging and prod profiles to exist in separate accounts.
 
@@ -95,7 +102,7 @@ Serverless Framework is used to describe our infrastruture
 * .env support
 * Pruning of old Lambda Function Versions
 * Lambda Functions optimized with Webpack
-  
+
 ## GitHub Actions Continuous Deployments (CI/CD)
 
 <p align="center">
