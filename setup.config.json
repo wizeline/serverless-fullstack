@@ -1,0 +1,18 @@
+{
+  "applicationName": "Awesome App",
+  "shortApplicationName": "",
+  "awsProfiles": {
+    "dev": {
+      "accessKey": "_",
+      "secretAccessKey": "_"
+    },
+    "staging": {
+      "accessKey": "_",
+      "secretAccessKey": "_"
+    },
+    "prod": {
+      "accessKey": "_",
+      "secretAccessKey": "_"
+    }
+  }
+}

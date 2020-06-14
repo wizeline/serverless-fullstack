@@ -1,5 +1,5 @@
 const npm = require('npm')
-const constants = require('./constants')
+const { constants } = require('./configuration')
 
 const installUIDependencies = () => {
   npm.load(() => npm.commands.install(constants.UIPath, []))
