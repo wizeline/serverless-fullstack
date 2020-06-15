@@ -25,7 +25,7 @@ To get started, run the following commands:
 `cp example.setup.config.json setup.config.json`
 
 Adjust setup.config.json to set your application name and your aws credentials.
-Once you have set up your setup.config.json file, run the following commands:
+Once you're done with the configuration file, run the following commands:
 
 `npm i`
 `npm run setup`
