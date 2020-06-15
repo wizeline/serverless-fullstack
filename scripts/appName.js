@@ -1,11 +1,11 @@
 const { configuration } = require('./configuration')
 
-const getUndescoredString = (string) => string.split(' ').join('_')
+const getTrimString = (string) => string.split(' ').join('')
 const getLowerCaseString = (string) => string.toLowerCase()
-const getLowerCasedUnderscoredString = (string) => getUndescoredString(getLowerCaseString(string))
+const getLowerCasedUnderscoredString = (string) => getTrimString(getLowerCaseString(string))
 
 module.exports.appName = configuration.applicationName
 
-module.exports.shortName = configuration.shortName !== null && configuration.shortName !== ''
+module.exports.shortName = configuration.shortName
   ? configuration.shortName
   : getLowerCasedUnderscoredString(configuration.applicationName)
