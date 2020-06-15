@@ -3,9 +3,13 @@ const configureAWS = require('./configureAWS')
 const installDependencies = require('./installDependencies')
 
 const main = async () => {
-  replaceFlags()
-  configureAWS()
-  installDependencies()
+  try {
+    replaceFlags()
+    configureAWS()
+    installDependencies()
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 main()

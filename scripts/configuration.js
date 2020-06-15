@@ -15,6 +15,10 @@ const manifest = 'public/manifest.json'
 const index = 'public/index.html'
 
 const getConfiguration = () => {
+  if (!fs.existsSync(setupConfigFile)) {
+    throw new Error('Could not find the setup.config.json file. Check it exists before continue')
+  }
+
   const file = fs.readFileSync(setupConfigFile)
   return JSON.parse(file)
 }
