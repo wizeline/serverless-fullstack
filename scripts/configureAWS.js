@@ -26,7 +26,7 @@ aws_secret_access_key=${credentials.secretAccessKey}
 
 const configureAWS = () => {
   try {
-    if (Object.keys(configuration.awsProfiles) || !isValidProfile(configuration.awsProfiles.dev)) {
+    if (Object.keys(configuration.awsProfiles).length === 0 || !isValidProfile(configuration.awsProfiles.dev)) {
       throw new Error('AWS Dev profile is required, please provide it')
     }
 
