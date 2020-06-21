@@ -6,6 +6,14 @@ const getLowerCasedUnderscoredString = (string) => getTrimString(getLowerCaseStr
 
 const getApplicationName = () => {
   try {
+    if (!configuration || configuration === undefined) {
+      throw new Error('Not configuration provided')
+    }
+
+    if (!configuration.applicationName || configuration.applicationName === '') {
+      throw new Error('Application name is a required parameter, please provide it')
+    }
+
     return configuration.applicationName
   } catch (error) {
     throw new Error(error)
@@ -14,6 +22,14 @@ const getApplicationName = () => {
 
 const getShortApplicationName = () => {
   try {
+    if (!configuration || configuration === undefined) {
+      throw new Error('Not configuration provided')
+    }
+
+    if (!configuration.applicationName || configuration.applicationName === '') {
+      throw new Error('Application name is a required parameter, please provide it')
+    }
+
     return configuration.shortApplicationName
       ? configuration.shortApplicationName
       : getLowerCasedUnderscoredString(configuration.applicationName)
@@ -22,6 +38,6 @@ const getShortApplicationName = () => {
   }
 }
 
-module.exports.appName = getApplicationName
+module.exports.appName = getApplicationName()
 
-module.exports.shortName = getShortApplicationName
+module.exports.shortName = getShortApplicationName()

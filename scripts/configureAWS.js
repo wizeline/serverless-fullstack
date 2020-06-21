@@ -25,19 +25,27 @@ aws_secret_access_key=${credentials.secretAccessKey}
 `
 
 const configureAWS = () => {
-  const { awsProfiles } = configuration
-
-  stages.forEach((stage) => {
-    if (isValidProfile(awsProfiles[stage])) {
-      const content = getStageContent(stage, awsProfiles[stage])
-      writeInFile(content)
-    } else {
-      const content = getStageContent(stage, awsProfiles[defaultStage])
-      writeInFile(content)
+  try {
+    if (Object.keys(configuration.awsProfiles) || !isValidProfile(configuration.awsProfiles.dev)) {
+      throw new Error('Not configuration provided')
     }
-  })
 
-  fs.unlinkSync(constants.setupConfigFile)
+    const { awsProfiles } = configuration
+
+    stages.forEach((stage) => {
+      if (isValidProfile(awsProfiles[stage])) {
+        const content = getStageContent(stage, awsProfiles[stage])
+        writeInFile(content)
+      } else {
+        const content = getStageContent(stage, awsProfiles[defaultStage])
+        writeInFile(content)
+      }
+    })
+
+    fs.unlinkSync(constants.setupConfigFile)
+  } catch (error) {
+    throw new Error(error)
+  }
 }
 
 module.exports = configureAWS

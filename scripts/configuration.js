@@ -13,9 +13,6 @@ const packageJson = 'package.json'
 const servelessStack = 'serverless.yaml'
 const manifest = 'public/manifest.json'
 const index = 'public/index.html'
-const { isValidProfile } = require('./configureAWS')
-
-let configuration
 
 const getConfiguration = () => {
   if (!fs.existsSync(setupConfigFile)) {
@@ -23,21 +20,7 @@ const getConfiguration = () => {
   }
 
   const file = fs.readFileSync(setupConfigFile)
-  const config = JSON.parse(file)
-
-  if (!config || config === undefined) {
-    throw new Error('Not configuration provided')
-  }
-
-  if (!config.applicationName || config.applicationName === '') {
-    throw new Error('Application name is a required parameter, please provide it')
-  }
-
-  if (Object.keys(config.awsProfiles).length === 0 || !isValidProfile(config.awsProfiles.dev)) {
-    throw new Error('AWS dev profile is required, please provide it')
-  }
-
-  configuration = config
+  return JSON.parse(file)
 }
 
 module.exports.constants = {
@@ -53,5 +36,4 @@ module.exports.constants = {
   AWSCredentials,
 }
 
-module.exports.init = getConfiguration
-module.exports.configuration = configuration
+module.exports.configuration = getConfiguration()
