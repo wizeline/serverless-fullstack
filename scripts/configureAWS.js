@@ -3,6 +3,15 @@ const { username } = require('os').userInfo()
 const { constants, configuration } = require('./configuration')
 const { shortName } = require('./appName')
 
+const stages = ['dev', 'staging', 'prod']
+const defaultStage = 'dev'
+
+const isValidProfile = (profile) => !!profile
+  && !!profile.accessKey
+  && profile.accessKey !== ''
+  && !!profile.secretAccessKey
+  && profile.secretAccessKey !== ''
+
 const writeInFile = (content) => {
   fs.appendFileSync(constants.AWSCredentials(username), content, (err) => {
     if (err) throw err
@@ -18,12 +27,18 @@ aws_secret_access_key=${credentials.secretAccessKey}
 const configureAWS = () => {
   const { awsProfiles } = configuration
 
-  Object.keys(awsProfiles).forEach((stage) => {
-    const content = getStageContent(stage, awsProfiles[stage])
-    writeInFile(content)
+  stages.forEach((stage) => {
+    if (isValidProfile(awsProfiles[stage])) {
+      const content = getStageContent(stage, awsProfiles[stage])
+      writeInFile(content)
+    } else {
+      const content = getStageContent(stage, awsProfiles[defaultStage])
+      writeInFile(content)
+    }
   })
 
   fs.unlinkSync(constants.setupConfigFile)
 }
 
 module.exports = configureAWS
+module.exports.isValidProfile = isValidProfile

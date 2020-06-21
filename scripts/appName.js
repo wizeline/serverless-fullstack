@@ -4,8 +4,24 @@ const getTrimString = (string) => string.split(' ').join('')
 const getLowerCaseString = (string) => string.toLowerCase()
 const getLowerCasedUnderscoredString = (string) => getTrimString(getLowerCaseString(string))
 
-module.exports.appName = configuration.applicationName
+const getApplicationName = () => {
+  try {
+    return configuration.applicationName
+  } catch (error) {
+    throw new Error(error)
+  }
+}
 
-module.exports.shortName = configuration.shortName
-  ? configuration.shortName
-  : getLowerCasedUnderscoredString(configuration.applicationName)
+const getShortApplicationName = () => {
+  try {
+    return configuration.shortApplicationName
+      ? configuration.shortApplicationName
+      : getLowerCasedUnderscoredString(configuration.applicationName)
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
+module.exports.appName = getApplicationName
+
+module.exports.shortName = getShortApplicationName

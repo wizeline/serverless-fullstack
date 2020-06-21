@@ -1,9 +1,11 @@
+const configuration = require('./configuration')
 const replaceFlags = require('./replaceFlags')
 const configureAWS = require('./configureAWS')
 const installDependencies = require('./installDependencies')
 
-const main = async () => {
+const main = () => {
   try {
+    configuration.init()
     replaceFlags()
     configureAWS()
     installDependencies()
