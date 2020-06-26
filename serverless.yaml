@@ -38,6 +38,7 @@ plugins:
   # - '../serverless-amplify-plugin'
   - '@wizeline/serverless-amplify-plugin'
   - serverless-offline
+  - serverless-stack-termination-protection
 
 custom:
   stages:
@@ -119,6 +120,10 @@ custom:
       - functionErrors
       - functionInvocations
       - functionDuration
+  serverlessTerminationProtection:
+    stages:
+      - staging
+      - production
 
 functions:
   express:
