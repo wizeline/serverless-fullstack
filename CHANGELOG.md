@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/wizeline/serverless-fullstack/compare/v1.2.2...v1.3.0) (2020-06-26)
+
+
+### Features
+
+* add cloudformation stacktermination ([#25](https://github.com/wizeline/serverless-fullstack/issues/25)) ([1e47b1a](https://github.com/wizeline/serverless-fullstack/commit/1e47b1a63e68c883f3c24fb49cad4d478f8472f9))
+
 ## [1.2.2](https://github.com/wizeline/serverless-fullstack/compare/v1.2.1...v1.2.2) (2020-06-10)
 
 
