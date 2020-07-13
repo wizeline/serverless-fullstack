@@ -1,5 +1,5 @@
 const replace = require('replace-in-file')
-const { constants } = require('./configuration')
+const constants = require('./constants')
 const { appName, shortName } = require('./appName')
 
 const replaceShortFlags = () => replace.sync({

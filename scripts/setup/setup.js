@@ -1,6 +1,6 @@
-const replaceFlags = () => require('./replaceFlags')
-const configureAWS = () => require('./configureAWS')
-const installDependencies = () => require('./installDependencies')
+const replaceFlags = require('./replaceFlags')
+const configureAWS = require('./configureAWS')
+const installDependencies = require('./installDependencies')
 
 const { validateConfigurationFile } = require('./configuration')
 

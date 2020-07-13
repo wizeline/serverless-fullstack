@@ -1,6 +1,6 @@
 const fs = require('fs')
 const { username } = require('os').userInfo()
-const { constants } = require('./constants')
+const { AWSCredentials, setupConfigFile } = require('./constants')
 const configuration = require('./configuration')
 const { shortName } = require('./appName')
 const { isValidProfile } = require('./utils')
@@ -9,7 +9,7 @@ const stages = ['dev', 'staging', 'prod']
 const defaultStage = 'dev'
 
 const writeInFile = (content) => {
-  fs.appendFileSync(constants.AWSCredentials(username), content, (err) => {
+  fs.appendFileSync(AWSCredentials(username), content, (err) => {
     if (err) throw err
   })
 }
@@ -30,7 +30,7 @@ const configureAWS = () => {
     writeInFile(content)
   })
 
-  fs.unlinkSync(constants.setupConfigFile)
+  fs.unlinkSync(setupConfigFile)
 }
 
 module.exports = configureAWS
