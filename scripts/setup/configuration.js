@@ -1,6 +1,6 @@
 const fs = require('fs')
-const { setupConfigFile } = require('./constants')
-const { isValidProfile } = require('./utils')
+const { setupConfigFile, MAX_LENGTH_ALLOWED } = require('./constants')
+const { isValidProfile, getLowerCasedTrimmedString } = require('./utils')
 
 const validateConfigurationFile = (callback) => {
   if (!fs.existsSync(setupConfigFile)) {
@@ -15,6 +15,14 @@ const validateConfigurationFile = (callback) => {
 
   if (Object.keys(file.awsProfiles).length === 0 || !isValidProfile(file.awsProfiles.dev)) {
     throw new Error('AWS Dev profile is required, please provide it')
+  }
+
+  const shortName = file.shortApplicationName
+    ? getLowerCasedTrimmedString(file.shortApplicationName)
+    : getLowerCasedTrimmedString(file.applicationName)
+
+  if (shortName.length > MAX_LENGTH_ALLOWED) {
+    throw new Error(`Short name is too large, it should be ${MAX_LENGTH_ALLOWED} characters length`)
   }
 
   callback()
