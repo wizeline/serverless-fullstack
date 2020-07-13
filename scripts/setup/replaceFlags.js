@@ -24,25 +24,21 @@ const replaceLongFlags = () => replace.sync({
 })
 
 const replaceFlag = () => {
-  try {
-    const changeShortName = replaceShortFlags()
-    const changeAppName = replaceLongFlags()
+  const changeShortName = replaceShortFlags()
+  const changeAppName = replaceLongFlags()
 
-    const filesChanged = [...changeShortName, ...changeAppName.filter((change) => {
-      const shortNameFile = changeShortName.find((ch) => ch.file === change.file)
-      /* conditional to get unique files */
-      if (shortNameFile) {
-        return change.hasChanged !== shortNameFile.hasChanged && change.hasChanged
-      }
+  const filesChanged = [...changeShortName, ...changeAppName.filter((change) => {
+    const shortNameFile = changeShortName.find((ch) => ch.file === change.file)
+    /* conditional to get unique files */
+    if (shortNameFile) {
+      return change.hasChanged !== shortNameFile.hasChanged && change.hasChanged
+    }
 
-      return change
-    })]
+    return change
+  })]
 
-    const filesCount = filesChanged.filter((r) => r.hasChanged).length
-    console.info(`${filesCount} files changed!`)
-  } catch (err) {
-    throw new Error(err)
-  }
+  const filesCount = filesChanged.filter((r) => r.hasChanged).length
+  console.info(`${filesCount} files changed!`)
 }
 
 module.exports = replaceFlag

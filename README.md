@@ -28,27 +28,6 @@ touch setup.config.json
 
 Adjust setup.config.json to set your application name and your aws credentials. It should contain the following structure:
 
-```
-{
-  "applicationName": "",
-  "shortApplicationName": "",
-  "awsProfiles": {
-    "dev": {
-      "accessKey": "",
-      "secretAccessKey": ""
-    },
-    "staging": {
-      "accessKey": "",
-      "secretAccessKey": ""
-    },
-    "prod": {
-      "accessKey": "",
-      "secretAccessKey": ""
-    }
-  }
-}
-```
-
 Application name is required, if it's not provided, the setup will throw an error.
 The AWS DEV profile is required, if prod and stage are not provided, the dev will be used instead.
 
