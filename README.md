@@ -23,10 +23,10 @@ To get started, run the following commands:
 ```
 git clone https://github.com/wizeline/serverless-fullstack
 cd serverless-fullstack
-touch setup.config.json
+npm run setup-file
 ```
 
-Adjust setup.config.json to set your application name and your aws credentials. It should contain the following structure:
+The last command will create a setup.config.json file, adjust it to set your application name and your aws credentials.
 
 Application name is required, if it's not provided, the setup will throw an error.
 The AWS DEV profile is required, if prod and stage are not provided, the dev will be used instead.
