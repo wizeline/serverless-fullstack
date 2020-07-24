@@ -33,8 +33,10 @@ The AWS DEV profile is required, if prod and stage are not provided, the dev wil
 
 Once you're done with the configuration file, run the following commands:
 
-```npm i
-npm run setup```
+```
+npm i
+npm run setup
+```
 
 Add your AWS credentials as secrets to your GitHub Repository with the following keys:
 
