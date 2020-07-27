@@ -1,12 +1,12 @@
 const npm = require('npm')
-const constants = require('./constants')
+const { UIPath, APIPath } = require('./constants')
 
 const installUIDependencies = () => {
-  npm.load(() => npm.commands.install(constants.UIPath, []))
+  npm.load(() => npm.commands.install(UIPath, []))
 }
 
 const installAPIDependencies = () => {
-  npm.load(() => npm.commands.install(constants.APIPath, []))
+  npm.load(() => npm.commands.install(APIPath, []))
 }
 
 const installDependencies = async () => {

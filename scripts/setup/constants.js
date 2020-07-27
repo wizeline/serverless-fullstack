@@ -5,18 +5,26 @@ const longNameFlags = [/My App/g]
 const UIPath = 'packages/ui/'
 const APIPath = 'packages/api/'
 
+const setupConfigFile = './setup.config.json'
+// TODO: add support for Windows
+const AWSCredentials = (username) => `/Users/${username}/.aws/credentials`
 const packageJson = 'package.json'
-const yamlFile = 'serverless.yaml'
+const servelessStack = 'serverless.yaml'
 const manifest = 'public/manifest.json'
 const index = 'public/index.html'
 
+const MAX_LENGTH_ALLOWED = 44
+
 module.exports = {
+  setupConfigFile,
   flags,
   longNameFlags,
   UIPath,
   APIPath,
   packageJson,
-  yamlFile,
+  servelessStack,
   manifest,
   index,
+  AWSCredentials,
+  MAX_LENGTH_ALLOWED,
 }
