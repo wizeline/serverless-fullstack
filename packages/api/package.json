@@ -48,7 +48,7 @@
     "dynamodb-toolbox": "github:jeremydaly/dynamodb-toolbox#v0.2",
     "express": "^4.17.1",
     "lodash": "^4.17.19",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "serverless-http": "^2.3.2",
     "shortid": "^2.2.15"
   }
