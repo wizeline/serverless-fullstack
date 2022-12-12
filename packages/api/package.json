@@ -46,7 +46,7 @@
     "discord.js": "^12.1.1",
     "dotenv": "^8.2.0",
     "dynamodb-toolbox": "github:jeremydaly/dynamodb-toolbox#v0.2",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "lodash": "^4.17.19",
     "node-fetch": "^2.6.0",
     "serverless-http": "^2.3.2",
